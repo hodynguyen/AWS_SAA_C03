@@ -1,8 +1,14 @@
 # Practice Test 1
 
-This folder contains 65 questions from Practice Exam 1.
-
 ## Progress
 
-- Total Questions: 0/65
-- Status: 🔄 In Progress
+- **Questions:** 65/65 ✅
+- **Status:** Completed
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `00_exam.md` | Full exam (questions only) |
+| `00_answer_key.md` | Answer key table |
+| `answers/` | Detailed explanations for each question |
