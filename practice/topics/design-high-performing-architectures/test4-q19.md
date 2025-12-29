@@ -1,52 +1,43 @@
 # Question 19
 
-## Topic
-Design High-Performing Architectures
+Web and application tiers need outbound Internet access to fetch data from public APIs but must be inaccessible from the Internet.
 
-## Question
-A Solutions Architect is designing the cloud architecture for the enterprise application suite of the company. Both the web and application tiers need to access the Internet to fetch data from public APIs. However, these servers should be inaccessible from the Internet.
-
-Which of the following steps should the Architect implement to meet the above requirements?
+Which steps should the Architect implement?
 
 ## Options
-A. Deploy a NAT gateway in the public subnet and add a route to it from the private subnet where the web and application tiers are hosted.
 
-B. Deploy a NAT gateway in the private subnet and add a route to it from the public subnet where the web and application tiers are hosted.
+A. Deploy a NAT gateway in the public subnet and add a route from the private subnet.
 
-C. Deploy the web and application tier instances to a private subnet and then allocate an Elastic IP address to each EC2 instance.
+B. Deploy a NAT gateway in the private subnet and add a route from the public subnet.
 
-D. Deploy the web and application tier instances to a public subnet and then allocate an Elastic IP address to each EC2 instance.
+C. Deploy instances to a private subnet and assign Elastic IP addresses.
+
+D. Deploy instances to a public subnet and assign Elastic IP addresses.
 
 ## Correct Answer
-A
+
+**A. Deploy a NAT gateway in the public subnet and add a route from the private subnet.**
 
 ## Explanation
-You can use a network address translation (NAT) gateway to enable instances in a private subnet to connect to the internet or other AWS services but prevent the internet from initiating a connection with those instances. You are charged for creating and using a NAT gateway in your account.
 
-NAT gateway hourly usage and data processing rates apply. Amazon EC2 charges for data transfer also apply. NAT gateways are not supported for IPv6 traffic—use an egress-only internet gateway instead.
+NAT Gateway enables private subnet instances to access the Internet while remaining unreachable from outside:
+1. **NAT Gateway in public subnet**: Has a public IP and route to Internet Gateway
+2. **Private subnet route table**: Points 0.0.0.0/0 to the NAT Gateway
+3. **Instances stay private**: No direct inbound access from Internet
 
-To create a NAT gateway, you must specify the public subnet in which the NAT gateway should reside. You must also specify an Elastic IP address to associate with the NAT gateway when you create it. The Elastic IP address cannot be changed once you associate it with the NAT Gateway.
+### Why other options are incorrect:
 
-After you've created a NAT gateway, you must update the route table associated with one or more of your private subnets to point Internet-bound traffic to the NAT gateway. This enables instances in your private subnets to communicate with the internet. Each NAT gateway is created in a specific Availability Zone and implemented with redundancy in that zone. You have a limit on the number of NAT gateways you can create in an Availability Zone.
+- **B** - NAT Gateway must be in a public subnet (needs Internet Gateway access).
 
-Hence, the correct answer is to deploy a NAT gateway in the public subnet and add a route to it from the private subnet where the web and application tiers are hosted.
+- **C** - Elastic IPs make instances publicly accessible, violating the requirement.
 
-Deploying the web and application tier instances to a private subnet and then allocating an Elastic IP address to each EC2 instance is incorrect because an Elastic IP address is just a static, public IPv4 address. In this scenario, you have to use a NAT Gateway instead.
+- **D** - Public subnet instances are directly accessible from the Internet.
 
-Deploying a NAT gateway in the private subnet and adding a route to it from the public subnet where the web and application tiers are hosted is incorrect because you have to deploy a NAT gateway in the public subnet instead and not on a private one.
+## References
 
-Deploying the web and application tier instances to a public subnet and then allocating an Elastic IP address to each EC2 instance is incorrect because having an EIP address is irrelevant as it is only a static, public IPv4 address. Moreover, you should deploy the web and application tier in the private subnet instead of a public subnet to make it inaccessible from the Internet and then just add a NAT Gateway to allow outbound Internet connection.
+- https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html
+- https://tutorialsdojo.com/amazon-vpc/
 
-Reference:
+## Domain
 
-https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html
-
-Check out this Amazon VPC Cheat Sheet:
-
-https://tutorialsdojo.com/amazon-vpc/
-
-Tutorials Dojo's AWS Certified Solutions Architect Associate Exam Study Guide:
-
-https://tutorialsdojo.com/aws-certified-solutions-architect-associate-saa-c03/
-
-
+Design High-Performing Architectures

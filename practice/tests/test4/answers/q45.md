@@ -1,36 +1,46 @@
 # Question 45
 
-## Topic
-Design Resilient Architectures
+An e-commerce application requires 6 EC2 instances running at all times. The region has 3 AZs.
 
-## Question
-A company recently launched an e-commerce application that is running in eu-east-2 region, which strictly requires six EC2 instances running at all times. In that region, there are 3 Availability Zones (AZ) that you can use - eu-east-2a, eu-east-2b, and eu-east-2c.
-
-Which of the following deployments provide 100% fault tolerance if any single AZ in the region becomes unavailable? (Select TWO.)
+Which deployments provide 100% fault tolerance if any single AZ fails? (Select TWO.)
 
 ## Options
-A. eu-east-2a with three EC2 instances, eu-east-2b with three EC2 instances, and eu-east-2c with three EC2 instances
 
-B. eu-east-2a with two EC2 instances, eu-east-2b with two EC2 instances, and eu-east-2c with two EC2 instances
+A. 3 instances in AZ-a, 3 in AZ-b, 3 in AZ-c
 
-C. eu-east-2a with six EC2 instances, eu-east-2b with six EC2 instances, and eu-east-2c with no EC2 instances
+B. 2 instances in AZ-a, 2 in AZ-b, 2 in AZ-c
 
-D. eu-east-2a with four EC2 instances, eu-east-2b with two EC2 instances, and eu-east-2c with two EC2 instances
+C. 6 instances in AZ-a, 6 in AZ-b, 0 in AZ-c
 
-E. eu-east-2a with two EC2 instances, eu-east-2b with four EC2 instances, and eu-east-2c with two EC2 instances
+D. 4 instances in AZ-a, 2 in AZ-b, 2 in AZ-c
+
+E. 2 instances in AZ-a, 4 in AZ-b, 2 in AZ-c
 
 ## Correct Answer
-A, C
+
+**A. 3 instances in AZ-a, 3 in AZ-b, 3 in AZ-c**
+
+**C. 6 instances in AZ-a, 6 in AZ-b, 0 in AZ-c**
 
 ## Explanation
-Fault Tolerance is the ability of a system to remain in operation even if some of the components used to build the system fail. In AWS, this means that in the event of server fault or system failures, the number of running EC2 instances should not fall below the minimum number of instances required by the system for it to work properly. So if the application requires a minimum of 6 instances, there should be at least 6 instances running in case there is an outage in one of the Availability Zones or if there are server issues.
 
-In this scenario, you have to simulate a situation where one Availability Zone became unavailable for each option and check whether it still has 6 running instances.
+Fault tolerance means maintaining 6 instances even if one AZ fails:
+- **3+3+3**: If any AZ fails → 6 instances remain
+- **6+6+0**: If any AZ fails → 6 instances remain
 
-Hence, the correct answers are: eu-east-2a with six EC2 instances, eu-east-2b with six EC2 instances, and eu-east-2c with no EC2 instances and eu-east-2a with three EC2 instances, eu-east-2b with three EC2 instances, and eu-east-2c with three EC2 instances because even if one of the availability zones were to go down, there would still be 6 active instances.
+For 100% fault tolerance, remaining AZs must have ≥6 instances combined.
 
-Reference:
+### Why other options are incorrect:
 
-https://media.amazonwebservices.com/AWS_Building_Fault_Tolerant_Applications.pdf
+- **B** - 2+2+2=6, but if one AZ fails → only 4 instances remain.
 
+- **D, E** - If the AZ with most instances fails → fewer than 6 remain.
 
+## References
+
+- https://media.amazonwebservices.com/AWS_Building_Fault_Tolerant_Applications.pdf
+- https://tutorialsdojo.com/amazon-ec2/
+
+## Domain
+
+Design Resilient Architectures

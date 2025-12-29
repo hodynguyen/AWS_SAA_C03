@@ -1,47 +1,40 @@
 # Question 7
 
-## Topic
-Design Resilient Architectures
+An e-commerce company runs weekly sales promotions causing intermittent downtime. The application has long initialization times and only becomes operational minutes before EC2 instances reach RUNNING state. A solution is needed to launch capacity in advance based on forecasted load.
 
-## Question
-Every week, an e-commerce company announces a sales promotion, causing its application hosted on an Auto Scaling group to experience intermittent downtime. Because of long initialization times, the application only becomes operational minutes before a new EC2 instance turns into RUNNING state. A solutions architect must devise a solution that launches capacity in advance based on a forecasted load in order to scale faster.
-
-Which solution meets the requirements with the least amount of effort?
+Which solution requires the least effort?
 
 ## Options
-A. Use Amazon SageMaker Clarify to analyze and predict the workload pattern of the application. Create a scheduled scaling policy based on the prediction results.
 
-B. Create a dynamic scaling policy based on the historical average CPU load of the application.
+A. Use Amazon SageMaker Clarify to analyze and predict workload patterns. Create a scheduled scaling policy.
+
+B. Create a dynamic scaling policy based on historical average CPU load.
 
 C. Configure the Auto Scaling group to use predictive scaling.
 
-D. Create a Scheduled Amazon EventBridge (Amazon CloudWatch Events) Rule that runs a scaling job on a Lambda function every midnight.
+D. Create a Scheduled EventBridge Rule that runs a scaling job on Lambda every midnight.
 
 ## Correct Answer
-C
+
+**C. Configure the Auto Scaling group to use predictive scaling.**
 
 ## Explanation
-Predictive scaling uses machine learning to predict capacity requirements based on historical data from CloudWatch. The machine learning algorithm consumes the available historical data and calculates capacity that best fits the historical load pattern, and then continuously learns based on new data to make future forecasts more accurate.
 
-In general, if you have regular patterns of traffic increases and applications that take a long time to initialize, you should consider using predictive scaling. Predictive scaling can help you scale faster by launching capacity in advance of forecasted load, compared to using only dynamic scaling, which is reactive in nature. Predictive scaling can also potentially save you money on your EC2 bill by helping you avoid the need to overprovision capacity. You also don't have to spend time reviewing your application's load patterns and trying to schedule the right amount of capacity using scheduled scaling.
+Predictive scaling uses machine learning to analyze historical CloudWatch data and forecast capacity requirements. It proactively launches instances before traffic spikes, solving the problem of long initialization times. This is built into Auto Scaling—no additional services needed.
 
-Hence, the correct answer is: Configure the Auto Scaling group to use predictive scaling.
+### Why other options are incorrect:
 
-References:
+- **A** - SageMaker Clarify detects ML model bias, not traffic patterns. This adds unnecessary complexity.
 
-https://docs.aws.amazon.com/autoscaling/plans/userguide/how-it-works.html
+- **B** - Dynamic scaling is reactive—it responds after thresholds are breached, not before.
 
-https://aws.amazon.com/blogs/aws/new-predictive-scaling-for-ec2-powered-by-machine-learning/
+- **D** - Requires manual implementation and adjustments when promotion schedules change.
 
-Check out this AWS Auto Scaling Group Cheat Sheet:
+## References
 
-https://tutorialsdojo.com/aws-auto-scaling/
+- https://docs.aws.amazon.com/autoscaling/plans/userguide/how-it-works.html
+- https://tutorialsdojo.com/aws-auto-scaling/
 
-**Why other options are incorrect:**
+## Domain
 
-- The option that says: Use Amazon SageMaker Clarify to analyze and predict the workload pattern of the application. Create a scheduled scaling policy based on the prediction results is incorrect because SageMaker Clarify is a tool designed for detecting bias and providing explainability for machine learning models. Using SageMaker Clarify would only involve unnecessary complexity and does not directly solve the problem of predicting traffic for Auto Scaling.
-
-- The option that says: Create a dynamic scaling policy based on the historical average CPU load of the applicationis incorrect. This solution alone is primarily useful if you want to adjust capacity when certain CPU thresholds are met. It won't be able to react to forecasted load patterns.
-
-- The option that says: Create a Scheduled Amazon EventBridge (Amazon CloudWatch Events) Rule that runs a scaling job on a Lambda function every midnight is incorrect. This solution takes more effort to implement and is subjected to rescheduling since the schedule for a sales promotion can change.
-
+Design Resilient Architectures

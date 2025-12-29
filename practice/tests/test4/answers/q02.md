@@ -1,14 +1,11 @@
 # Question 2
 
-## Topic
-Design Cost-Optimized Architectures
+A company has 200 TB of backup files in Amazon S3 in a proprietary format. They need to use vendor software to convert files to a standard format and re-upload to S3. The solution must minimize data transfer costs.
 
-## Question
-A company has stored 200 TB of backup files in Amazon S3. The files are in a vendor-proprietary format. The Solutions Architect needs to use the vendor's proprietary file conversion software to retrieve the files from their Amazon S3 bucket, transform the files to an industry-standard format, and re-upload the files back to Amazon S3. The solution must minimize the data transfer costs.
-
-Which of the following options can satisfy the given requirement?
+Which option satisfies this requirement?
 
 ## Options
+
 A. Deploy the EC2 instance in the same Region as Amazon S3. Install the file conversion software on the instance. Perform data transformation and re-upload it to Amazon S3.
 
 B. Deploy the EC2 instance in a different Region. Install the conversion software on the instance. Perform data transformation and re-upload it to Amazon S3.
@@ -18,38 +15,26 @@ C. Install the file conversion software in Amazon S3. Use S3 Batch Operations to
 D. Export the data using AWS Snowball Edge device. Install the file conversion software on the device. Transform the data and re-upload it to Amazon S3.
 
 ## Correct Answer
-A
+
+**A. Deploy the EC2 instance in the same Region as Amazon S3. Install the file conversion software on the instance. Perform data transformation and re-upload it to Amazon S3.**
 
 ## Explanation
-Amazon S3 is object storage built to store and retrieve any amount of data from anywhere on the Internet. It’s a simple storage service that offers industry-leading durability, availability, performance, security, and virtually unlimited scalability at very low costs. Amazon S3 is also designed to be highly flexible. Store any type and amount of data that you want; read the same piece of data a million times or only for emergency disaster recovery; build a simple FTP application or a sophisticated web application.
 
-You pay for all bandwidth into and out of Amazon S3, except for the following:
+Data transfer between S3 and EC2 within the same AWS Region is free. By deploying the EC2 instance in the same region as the S3 bucket, the company avoids data transfer charges for both downloading and re-uploading the 200 TB of files.
 
-- Data transferred in from the Internet.
+### Why other options are incorrect:
 
-- Data transferred out to an Amazon EC2 instance, when the instance is in the same AWS Region as the S3 bucket (including to a different account in the same AWS region).
+- **B** - Deploying EC2 in a different region incurs cross-region data transfer charges.
 
-- Data transferred out to Amazon CloudFront.
+- **C** - You cannot install custom software in S3. S3 Batch Operations cannot run proprietary conversion software.
 
-To minimize the data transfer charges, you need to deploy the EC2 instance in the same Region as Amazon S3. Take note that there is no data transfer cost between S3 and EC2 in the same AWS Region. Install the conversion software on the instance to perform data transformation and re-upload the data to Amazon S3.
+- **D** - Snowball is for transferring data to/from on-premises. There's no on-premises data center mentioned in this scenario.
 
-Hence, the correct answer is: Deploy the EC2 instance in the same Region as Amazon S3. Install the file conversion software on the instance. Perform data transformation and re-upload it to Amazon S3.
+## References
 
-References:
+- https://aws.amazon.com/s3/pricing/
+- https://tutorialsdojo.com/amazon-s3/
 
-https://aws.amazon.com/s3/pricing/
+## Domain
 
-https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonS3.html
-
-Check out this Amazon S3 Cheat Sheet:
-
-https://tutorialsdojo.com/amazon-s3/
-
-**Why other options are incorrect:**
-
-- The option that says: Install the file conversion software in Amazon S3. Use S3 Batch Operations to perform data transformation is incorrect because it is not possible to install the software in Amazon S3. The S3 Batch Operations just runs multiple S3 operations in a single request. It can’t be integrated with your conversion software.
-
-- The option that says: Export the data using AWS Snowball Edge device. Install the file conversion software on the device. Transform the data and re-upload it to Amazon S3 is incorrect. Although this is possible, it is not mentioned in the scenario that the company has an on-premises data center. Thus, there's no need for Snowball.
-
-- The option that says: Deploy the EC2 instance in a different Region. Install the file conversion software on the instance. Perform data transformation and re-upload it to Amazon S3 is incorrect because this approach wouldn't minimize the data transfer costs. You should deploy the instance in the same Region as Amazon S3.
-
+Design Cost-Optimized Architectures

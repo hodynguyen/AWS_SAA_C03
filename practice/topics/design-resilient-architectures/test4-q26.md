@@ -1,53 +1,44 @@
 # Question 26
 
-## Topic
-Design Resilient Architectures
+A company uses Amazon EKS for container applications. Workload varies throughout the day, and infrastructure needs to auto-scale with minimal overhead.
 
-## Question
-A solutions architect is tasked with designing a scalable infrastructure solution for a business that runs uses Amazon Elastic Kubernetes Service (Amazon EKS) to execute container applications. Since the company's workload varies throughout the day, they want to make sure that its underlying infrastructure automatically scales in and out in response to demand.
-
-Which of the following would meet the requirements with the LEAST amount of operational overhead?
+Which solution meets the requirements?
 
 ## Options
-A. Integrate an edge-optimized API endpoint in Amazon API Gateway with Amazon EKS to manage and expose APIs for the containerized applications running on EKS.
 
-B. Set up CloudWatch alarms for CPU utilization or request count to monitor the relevant metrics of the container applications running on Amazon EKS.
+A. Integrate edge-optimized API Gateway endpoint with EKS to manage APIs.
 
-C. Use Amazon EC2 Auto Scaling Groups with custom scaling policies to manage the scaling of EKS worker nodes.
+B. Set up CloudWatch alarms for CPU/request count to monitor EKS metrics.
 
-D. Use a combination of Kubernetes Metrics and Kubernetes Cluster Autoscaler to manage the number of nodes.
+C. Use EC2 Auto Scaling Groups with custom policies to manage EKS worker nodes.
+
+D. Use Kubernetes Metrics and Kubernetes Cluster Autoscaler to manage nodes.
 
 ## Correct Answer
-D
+
+**D. Use Kubernetes Metrics and Kubernetes Cluster Autoscaler to manage nodes.**
 
 ## Explanation
-Autoscaling is a function that automatically scales your resources up or down to meet changing demands. This is a major Kubernetes function that would otherwise require extensive human resources to perform manually.
 
-Amazon EKS supports two autoscaling solutions:
+EKS supports two autoscaling mechanisms:
+- **Horizontal Pod Autoscaler (HPA)**: Scales pods based on CPU/memory metrics
+- **Cluster Autoscaler**: Adjusts node count based on pending pods
 
-Karpenter is a flexible, high-performance Kubernetes cluster autoscaler that launches appropriately sized compute resources, like Amazon EC2 instances, in response to changing application load. It integrates with AWS to provision compute resources that precisely match workload requirements.
+Together, they provide seamless Kubernetes-native scaling with minimal configuration—no custom policies or Lambda functions needed.
 
-Cluster Autoscaler, on the other hand, automatically adjusts the number of nodes in a cluster based on pod failures or rescheduling. It utilizes Auto Scaling groups for managing the cluster's node capacity.
+### Why other options are incorrect:
 
-The Kubernetes Horizontal Pod Autoscaler (HPA) automatically scales the number of Pods based on CPU utilization, allowing applications to scale in or out to meet demand. It is a standard API resource in Kubernetes that requires a metrics source like the Kubernetes metrics server to be installed on the Amazon EKS cluster. The HPA does not need additional deployment or installation on the cluster to start scaling applications.
+- **A** - API Gateway manages API exposure, not scaling.
 
-Hence, the correct answer is: Use a combination of Kubernetes Metrics and Kubernetes Cluster Autoscaler to manage the number of nodes.
+- **B** - CloudWatch alarms monitor but don't trigger EKS scaling directly.
 
-References:
+- **C** - EC2 Auto Scaling Groups require more configuration than Cluster Autoscaler.
 
-https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html
+## References
 
-https://docs.aws.amazon.com/eks/latest/userguide/horizontal-pod-autoscaler.html
+- https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html
+- https://tutorialsdojo.com/amazon-elastic-kubernetes-service-eks/
 
-Check out this Amazon EKS Cheat Sheet:
+## Domain
 
-https://tutorialsdojo.com/amazon-elastic-kubernetes-service-eks/
-
-**Why other options are incorrect:**
-
-- The option that says: Integrate an edge-optimized API endpoint in Amazon API Gateway with Amazon EKS to manage and expose APIs for the containerized applications running on EKS is incorrect because the question specifically asks for a solution that enables automatic scaling in response to demand. An edge-optimized API endpoint in Amazon API Gateway is primarily used for geographically distributed clients wherein the API requests are routed to the nearest CloudFront Point of Presence (POP). It doesn't specifically address the need for scaling.
-
-- The option that says: Use Amazon EC2 Auto Scaling Groups with custom scaling policies to manage the scaling of EKS worker nodes is incorrect. While Amazon EC2 Auto Scaling Groups can be used to manage EKS worker nodes, this approach requires more configuration and management of scaling policies. It does not offer the same level of seamless integration and automation as Kubernetes Cluster Autoscaler, which is more optimized for Kubernetes workloads.
-
-- The option that says: Set up CloudWatch alarms for CPU utilization or request count to monitor the relevant metrics of the container applications running on Amazon EKS is incorrect. While Amazon CloudWatch alarms can monitor the metrics of the Amazon EKS cluster, this approach alone does not enable automatic scaling of the EKS cluster in response to demand.
-
+Design Resilient Architectures

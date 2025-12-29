@@ -1,45 +1,43 @@
 # Question 47
 
-## Topic
-Design Resilient Architectures
+A company uses Redshift for their data warehouse. They need a disaster recovery plan that ensures business continuity even during an AWS region outage.
 
-## Question
-A data analytics company, which uses machine learning to collect and analyze consumer data, is using Redshift cluster as their data warehouse. You are instructed to implement a disaster recovery plan for their systems to ensure business continuity even in the event of an AWS region outage.
-
-Which of the following is the best approach to meet this requirement?
+What is the best approach?
 
 ## Options
-A. Enable Cross-Region Snapshots Copy in your Amazon Redshift Cluster.
 
-B. Do nothing because Amazon Redshift is a highly available, fully-managed data warehouse which can withstand an outage of an entire AWS region.
+A. Enable Cross-Region Snapshots Copy in Redshift.
+
+B. Do nothing because Redshift is highly available and can withstand region outages.
 
 C. Use Automated snapshots of your Redshift Cluster.
 
-D. Create a scheduled job that will automatically take the snapshot of your Redshift Cluster and store it to an S3 bucket. Restore the snapshot in case of an AWS region outage.
+D. Create a scheduled job to take snapshots and store in S3.
 
 ## Correct Answer
-A
+
+**A. Enable Cross-Region Snapshots Copy in Redshift.**
 
 ## Explanation
-You can configure Amazon Redshift to copy snapshots for a cluster to another region. To configure cross-region snapshot copy, you need to enable this copy feature for each cluster and configure where to copy snapshots and how long to keep copied automated snapshots in the destination region. When a cross-region copy is enabled for a cluster, all new manual and automatic snapshots are copied to the specified region.
 
-Using Automated snapshots of your Redshift Cluster is incorrect because using automated snapshots is not enough and will not be available in case the entire AWS region is down.
+Cross-region snapshot copy:
+- **Automatic replication**: Snapshots copied to another region automatically
+- **Region failure protection**: Restore cluster in another region if primary fails
+- **Configurable retention**: Control how long snapshots are kept in destination region
 
-Reference:
+### Why other options are incorrect:
 
-https://docs.aws.amazon.com/redshift/latest/mgmt/managing-snapshots-console.html
+- **B** - Redshift is highly available within a region, but won't survive a complete region outage without cross-region replication.
 
-Amazon Redshift Overview:
+- **C** - Automated snapshots stay in the same region. They won't survive a region failure.
 
-https://youtu.be/jlLERNzhHOg
+- **D** - Manual jobs are error-prone. Cross-region snapshot copy is built-in.
 
-Check out this Amazon Redshift Cheat Sheet:
+## References
 
-https://tutorialsdojo.com/amazon-redshift/
+- https://docs.aws.amazon.com/redshift/latest/mgmt/managing-snapshots-console.html
+- https://tutorialsdojo.com/amazon-redshift/
 
-**Why other options are incorrect:**
+## Domain
 
-- The option that says: Create a scheduled job that will automatically take the snapshot of your Redshift Cluster and store it to an S3 bucket. Restore the snapshot in case of an AWS region outage is incorrect. Although this option is possible, this entails a lot of manual work and hence, not the best option. You should configure cross-region snapshot copy instead.
-
-- The option that says: Do nothing because Amazon Redshift is a highly available, fully-managed data warehouse which can withstand an outage of an entire AWS region is incorrect. Although Amazon Redshift is a fully-managed data warehouse, you will still need to configure cross-region snapshot copy to ensure that your data is properly replicated to another region.
-
+Design Resilient Architectures

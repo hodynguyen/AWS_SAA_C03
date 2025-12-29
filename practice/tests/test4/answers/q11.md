@@ -1,49 +1,40 @@
 # Question 11
 
-## Topic
-Design Secure Architectures
-
-## Question
-A financial services organization is developing a cloud-native application on AWS to process and analyze customer transaction data. The application utilizes Amazon Aurora for the database, Amazon EFS for file storage, and Amazon EventBridge to trigger AWS Step Functions for workflow orchestration.
-
-The organization has implemented AWS IAM Identity Center for user authentication. The data science, engineering, and compliance teams require secure access to Amazon Aurora and Amazon EFS while maintaining strict data privacy standards. The solution must adhere to the principle of least privilege and minimize administrative overhead.
+A financial services company uses Aurora, EFS, and EventBridge for a cloud-native application. They use IAM Identity Center for authentication. Data science, engineering, and compliance teams need secure access to Aurora and EFS with least privilege and minimal administrative overhead.
 
 Which approach best satisfies these requirements?
 
 ## Options
-A. Enable the IAM Identity Center with an Identity Center directory and create permission sets for granular access for Amazon Aurora and Amazon EFS. Assign teams to groups linked to specific permission sets based on their roles.
 
-B. Use Amazon Cognito User Pools for authentication and use Cognito Identity Pools to provide temporary AWS credentials. Create fine-grained IAM roles for Aurora and EFS access in each team.
+A. Enable IAM Identity Center with an Identity Center directory. Create permission sets for granular access to Aurora and EFS. Assign teams to groups linked to specific permission sets.
 
-C. Set up AWS Control Tower to manage multi-account access. Use Service Control Policies (SCPs) to restrict access to Aurora and EFS at the organizational level. Create IAM roles in each account with specific permissions.
+B. Use Amazon Cognito User Pools for authentication and Identity Pools for temporary credentials. Create fine-grained IAM roles for each team.
 
-D. Create separate AWS accounts for each team using AWS Organizations. Set up cross-account IAM roles with least privilege and assign specific Aurora and EFS permissions based on team roles.
+C. Set up AWS Control Tower with Service Control Policies (SCPs) to restrict access at the organizational level. Create IAM roles in each account.
+
+D. Create separate AWS accounts for each team using AWS Organizations. Set up cross-account IAM roles with specific permissions.
 
 ## Correct Answer
-A
+
+**A. Enable IAM Identity Center with an Identity Center directory. Create permission sets for granular access to Aurora and EFS. Assign teams to groups linked to specific permission sets.**
 
 ## Explanation
-AWS IAM Identity Center centralizes access management for various AWS accounts and applications. It provides single sign-on (SSO) access, enabling users to manage all their assigned accounts from a single location. Users can synchronize with an existing identity provider or create new users and groups directly within the service.
 
-IAM Identity Center utilizes permission sets—collections of IAM policies—to manage user access across AWS Organizations. It includes a user-friendly AWS Access Portal for easy access to applications and supports deployment for both organization and account instances. Designed for high availability across multiple availability zones, the service ensures secure access through AWS Identity and Access Management (IAM) roles and policies.
+IAM Identity Center provides centralized SSO access management. Permission sets are collections of IAM policies that define access levels. By creating groups for each team and linking them to specific permission sets, you achieve granular access control with minimal overhead—all managed from a single location.
 
-Hence, the correct answer is: Enable the IAM Identity Center with an Identity Center directory and create permission sets for granular access for Amazon Aurora and Amazon EFS. Assign teams to groups linked to specific permission sets based on their roles. This approach provides centralized user management and granular access control and integrates well with the existing IAM Identity Center setup. This approach allows for easy assignment of permissions based on team roles and adheres to the principle of least privilege.
+### Why other options are incorrect:
 
-References:
+- **B** - Cognito is for application user authentication, not for AWS resource access management. It doesn't integrate with the existing IAM Identity Center setup.
 
-https://aws.amazon.com/about-aws/whats-new/2023/05/amazon-sagemaker-data-wrangler-image-data-preparation/https://docs.aws.amazon.com/singlesignon/latest/userguide/get-set-up-for-idc.html
+- **C** - Control Tower SCPs operate at the account/OU level, not for fine-grained resource access. This adds complexity without solving the problem.
 
-https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html
+- **D** - Separate accounts add significant administrative overhead for managing team access.
 
-Check out this AWS Identity and Access Management Cheat Sheet:
+## References
 
-https://tutorialsdojo.com/aws-identity-and-access-management-iam/
+- https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html
+- https://tutorialsdojo.com/aws-identity-and-access-management-iam/
 
-**Why other options are incorrect:**
+## Domain
 
-- The option that says: Set up AWS Control Tower to manage multi-account access. Use Service Control Policies (SCPs) to restrict access to Aurora and EFS at the organizational level. Create IAM roles in each account with specific permissions is incorrect. AWS Control Tower is typically used for multi-account governance and high-level policy enforcement using Service Control Policies (SCPs). While SCPs can restrict access, they operate at the account or organizational level and cannot provide the fine-grained access required for individual resources like Amazon Aurora or Amazon EFS. This approach increases administrative complexity and does not minimize overhead.
-
-- The option that says: Use Amazon Cognito User Pools for authentication and use Cognito Identity Pools to provide temporary AWS credentials. Create fine-grained IAM roles for Aurora and EFS access in each team is incorrect. Amazon Cognito typically provides user authentication and access to AWS resources through temporary credentials. However, Cognito is not inherently integrated with the IAM Identity Center, which the organization is already using. This approach introduces additional complexity and does not align with the organization's current authentication strategy.
-
-- The option that says: Create separate AWS accounts for each team using AWS Organizations. Set up cross-account IAM roles with least privilege and assign specific Aurora and EFS permissions based on team roles is incorrect. Using separate AWS accounts and cross-account roles can enforce strict access boundaries, but it adds significant administrative overhead. Managing multiple accounts for each team is unnecessary for this scenario and does not align with the requirement to minimize complexity.
-
+Design Secure Architectures

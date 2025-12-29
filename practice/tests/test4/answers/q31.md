@@ -1,53 +1,45 @@
 # Question 31
 
-## Topic
-Design High-Performing Architectures
+A company wants to migrate on-premises Linux/Windows VMs to AWS using lift-and-shift with minimal downtime.
 
-## Question
-A company hosts all its applications on its data center on the US East Coast. Most of the workloads are legacy applications that are hosted on individual virtual machines running in Linux and Windows operating systems. The company plans to migrate all of its VM workloads to the AWS cloud. To minimize changes in the applications during the migration process, it has been decided that the company will use a “lift-and-shift” strategy. The company also wants to minimize downtime during the migration process.
-
-Which of the following options should the Solutions Architect implement for this scenario?
+Which solution should be implemented?
 
 ## Options
-A. Utilize AWS DataSync to migrate the application workloads to AWS. Deploy the AWS DataSync VM on the on-premises data center. Once replication is completed, launch Amazon EC2 instances based on the created AMIs.
 
-B. Export the on-premises VMs and upload the images to an Amazon S3 bucket. Use VM Import/Export service to import the images and launch them as Amazon EC2 instances.
+A. Use AWS DataSync to migrate workloads. Deploy DataSync VM on-premises.
 
-C. Install the AWS Replication Agent on each of the on-premises VMs to continuously replicate the servers to AWS. Use AWS Migration Service (AWS MGN) to launch test instances and perform cutover once testing is completed.
+B. Export VMs to S3, use VM Import/Export to launch as EC2 instances.
 
-D. Use the AWS Application Discovery Service for lift-and-shift migrations. Deploy the AWS Application Discovery Agent to the on-premises data center to start the replication process. After the replication task is completed, launch Amazon EC2 instances based on the created AMIs.
+C. Install AWS Replication Agent on VMs. Use AWS MGN for continuous replication and cutover.
+
+D. Use AWS Application Discovery Service for migration. Deploy Discovery Agent on-premises.
 
 ## Correct Answer
-C
+
+**C. Install AWS Replication Agent on VMs. Use AWS MGN for continuous replication and cutover.**
 
 ## Explanation
-AWS Application Migration Service (AWS MGN) is the primary migration service recommended for lift-and-shift migrations to AWS. AWS encourages customers who are currently using AWS Elastic Disaster Recovery to switch to AWS MGN for future migrations. AWS MGN enables organizations to move applications to AWS without having to make any changes to the applications, their architecture, or the migrated servers.
 
-AWS Application Migration Service minimizes time-intensive, error-prone manual processes by automatically converting your source servers from physical, virtual machines, and cloud infrastructure to run natively on AWS.
+AWS Application Migration Service (MGN) is the recommended lift-and-shift solution:
+1. **Install Replication Agent**: Continuous block-level replication to AWS
+2. **Launch Test Instances**: Validate before cutover
+3. **Perform Cutover**: Minimal downtime—only final sync required
 
-The service simplifies your migration by enabling you to use the same automated process for a wide range of applications. By launching non-disruptive tests before migrating, you can be confident that your most critical applications such as SAP, Oracle, and SQL Server, will work seamlessly on AWS.
+Supports physical, virtual, and cloud servers without application changes.
 
-Implementation begins by installing the AWS Replication Agent on your source servers. When you launch Test or Cutover instances, AWS Application Migration Service automatically converts your source servers to boot and runs natively on AWS.
+### Why other options are incorrect:
 
-Therefore, the correct answer is: Install the AWS Replication Agent on each of the on-premises VMs to continuously replicate the servers to AWS. Use AWS Migration Service (AWS MGN) to launch test instances and perform cutover once testing is completed.
+- **A** - DataSync transfers files/data, not VM workloads.
 
-References:
+- **B** - VM Import/Export causes downtime during export and doesn't support continuous replication.
 
-https://aws.amazon.com/blogs/aws/how-to-use-the-new-aws-application-migration-service-for-lift-and-shift-migrations/
+- **D** - Application Discovery Service discovers resources, it doesn't migrate them.
 
-https://docs.aws.amazon.com/mgn/latest/ug/what-is-application-migration-service.html
+## References
 
-https://docs.aws.amazon.com/mgn/latest/ug/first-time-setup-gs.html
+- https://docs.aws.amazon.com/mgn/latest/ug/what-is-application-migration-service.html
+- https://tutorialsdojo.com/aws-application-migration-service/
 
-Check out this AWS Application Migration Service Cheat Sheet:
+## Domain
 
-https://tutorialsdojo.com/aws-application-migration-service/
-
-**Why other options are incorrect:**
-
-- The option that says: Export the on-premises VMs and upload the images to an Amazon S3 bucket. Use VM Import/Export service to import the images and launch them as Amazon EC2 instances is incorrect. This approach will take a lot of downtime since you will need to import the VMs manually, and they will most likely be outdated if there are a lot of changes on the source VMs after the upload is complete.
-
-- The option that says: Use the AWS Application Discovery Service for lift-and-shift migrations. Deploy the AWS Application Discovery Agent to the on-premises data center to start the replication process. After the replication task is completed, launch Amazon EC2 instances based on the created AMIs is incorrect. The AWS Application Discovery Service is primarily used to track the migration status of your on-premises applications from the Migration Hub console in your home Region. This service is not capable of doing the actual migration.
-
-- The option that says: Utilize AWS DataSync to migrate the application workloads to AWS. Deploy the AWS DataSync VM on the on-premises data center. Once replication is completed, launch Amazon EC2 instances based on the created AMIs is incorrect. AWS DataSync is designed to facilitate data transfer from on-premises to AWS storage systems, not for migrating/syncing Virtual Machines.
-
+Design High-Performing Architectures

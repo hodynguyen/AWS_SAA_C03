@@ -1,41 +1,42 @@
 # Question 62
 
-## Topic
-Design Cost-Optimized Architectures
+An application requires 6 EC2 instances minimum and must be fault-tolerant to one AZ failure. The solution must be cost-effective.
 
-## Question
-A web application requires a minimum of six Amazon Elastic Compute Cloud (EC2) instances running at all times. You are tasked to deploy the application to three availability zones in the EU Ireland region (eu-west-1a, eu-west-1b, and eu-west-1c). It is required that the system is fault-tolerant up to the loss of one Availability Zone.
-
-Which of the following setup is the most cost-effective solution which also maintains the fault-tolerance of your system?
+What is the most cost-effective deployment across 3 AZs?
 
 ## Options
-A. 6 instances in eu-west-1a, 6 instances in eu-west-1b, and 6 instances in eu-west-1c
 
-B. 6 instances in eu-west-1a, 6 instances in eu-west-1b, and no instances in eu-west-1c
+A. 6 instances in each of 3 AZs (18 total)
 
-C. 3 instances in eu-west-1a, 3 instances in eu-west-1b, and 3 instances in eu-west-1c
+B. 6 instances in 2 AZs, 0 in third (12 total)
 
-D. 2 instances in eu-west-1a, 2 instances in eu-west-1b, and 2 instances in eu-west-1c
+C. 3 instances in each of 3 AZs (9 total)
+
+D. 2 instances in each of 3 AZs (6 total)
 
 ## Correct Answer
-C
+
+**C. 3 instances in each of 3 AZs (9 total)**
 
 ## Explanation
-Basically, fault-tolerance is the ability of a system to remain in operation even in the event that some of its components fail without any service degradation. In AWS, it can also refer to the minimum number of running EC2 instances or resources which should be running at all times in order for the system to properly operate and serve its consumers. Take note that this is quite different from the concept of High Availability, which is just concerned with having at least one running instance or resource in case of failure.
 
-In this scenario, 3 instances in eu-west-1a, 3 instances in eu-west-1b, and 3 instances in eu-west-1c is the correct answer because even if there was an outage in one of the Availability Zones, the system still satisfies the requirement of having a minimum of 6 running instances. It is also the most cost-effective solution among other options.
+Fault tolerance with minimum cost:
+- **3+3+3 = 9 instances**: If one AZ fails → 6 remain ✓
+- Meets requirement with fewest total instances
 
-References:
+### Why other options are incorrect:
 
-https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-increase-availability.html
+- **A** - 18 instances is overkill and expensive.
 
-https://media.amazonwebservices.com/AWS_Building_Fault_Tolerant_Applications.pdf
+- **B** - 12 instances works but costs more than 9.
 
-**Why other options are incorrect:**
+- **D** - 2+2+2 = 6: If one AZ fails → only 4 remain (doesn't meet requirement).
 
-- The option that says: 6 instances in eu-west-1a, 6 instances in eu-west-1b, and 6 instances in eu-west-1c is incorrect. Although this solution provides the maximum fault-tolerance for the system, it entails a significant cost to maintain a total of 18 instances across 3 AZs.
+## References
 
-- The option that says: 2 instances in eu-west-1a, 2 instances in eu-west-1b, and 2 instances in eu-west-1c is incorrect because if one Availability Zone goes down, there will only be 4 running instances available. Although this is the most cost-effective solution, it does not provide fault-tolerance.
+- https://media.amazonwebservices.com/AWS_Building_Fault_Tolerant_Applications.pdf
+- https://tutorialsdojo.com/amazon-ec2/
 
-- The option that says: 6 instances in eu-west-1a, 6 instances in eu-west-1b, and no instances in eu-west-1c is incorrect. Although it provides fault-tolerance, it is not the most cost-effective solution as compared with the options above. This solution has 12 running instances, unlike the correct answer which only has 9 instances.
+## Domain
 
+Design Cost-Optimized Architectures

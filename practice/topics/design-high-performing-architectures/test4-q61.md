@@ -1,53 +1,48 @@
 # Question 61
 
-## Topic
-Design High-Performing Architectures
+A global news website hosted on EC2 has slow response times due to increased load, affecting revenue.
 
-## Question
-A company has a global news website hosted in a fleet of EC2 Instances. Lately, the load on the website has increased which resulted in slower response time for the site visitors. This issue impacts the revenue of the company as some readers tend to leave the site if it does not load after 10 seconds. The goal is to address the issue in a cost-effective manner.”
-
-Which of the below services in AWS can be used to solve this problem? (Select TWO.)
+Which services can solve this problem cost-effectively? (Select TWO.)
 
 ## Options
-A. For better read throughput, use AWS Storage Gateway to distribute the content across multiple regions.
 
-B. Deploy the website to all regions in different VPCs for faster processing.
+A. Use AWS Storage Gateway for content distribution.
 
-C. Use Amazon RDS Multi-AZ deployments for database read scalability.
+B. Deploy website to all regions in different VPCs.
 
-D. Use Amazon ElastiCache for the website's in-memory data store or cache.
+C. Use Amazon RDS Multi-AZ for read scalability.
 
-E. Use Amazon CloudFront with website as the custom origin.
+D. Use Amazon ElastiCache for in-memory caching.
+
+E. Use Amazon CloudFront with website as custom origin.
 
 ## Correct Answer
-D, E
+
+**D. Use Amazon ElastiCache for in-memory caching.**
+
+**E. Use Amazon CloudFront with website as custom origin.**
 
 ## Explanation
-The global news website has a problem with latency considering that there are a lot of readers of the site from all parts of the globe. In this scenario, you can use a content delivery network (CDN) which is a geographically distributed group of servers that work together to provide fast delivery of Internet content. And since this is a news website, most of its data are read-only, which can be cached to improve the read throughput and avoid repetitive requests from the server.
 
-In AWS, Amazon CloudFront is the global content delivery network (CDN) service that you can use, and for web caching, Amazon ElastiCache is the suitable service.
+For global content delivery and reduced latency:
+- **CloudFront**: CDN caches content at edge locations worldwide
+- **ElastiCache**: In-memory cache reduces database/backend load
 
-Hence, the correct answers are:
+Together they reduce origin server load and deliver content from locations closest to users.
 
-- Use Amazon CloudFront with website as the custom origin.
+### Why other options are incorrect:
 
-- Use Amazon ElastiCache for the website's in-memory data store or cache.
+- **A** - Storage Gateway is for hybrid cloud storage, not content delivery.
 
-References:
+- **B** - Multi-region deployment is expensive and complex.
 
-https://aws.amazon.com/elasticache/
+- **C** - Multi-AZ provides HA, not read scalability or latency improvement.
 
-http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html
+## References
 
-Check out this Amazon CloudFront Cheat Sheet:
+- https://aws.amazon.com/elasticache/
+- https://tutorialsdojo.com/amazon-cloudfront/
 
-https://tutorialsdojo.com/amazon-cloudfront/
+## Domain
 
-**Why other options are incorrect:**
-
-- The option that says: For better read throughput, use AWS Storage Gateway to distribute the content across multiple regions is incorrect as AWS Storage Gateway is only used for storage.
-
-- The option that says: Deploy the website to all regions in different VPCs for faster processing is incorrect as this typically would be costly and totally unnecessary, considering that you can use Amazon CloudFront and ElastiCache to improve the performance of the website.
-
-- The option that says: Use Amazon RDS Multi-AZ deployments for database read scalability is incorrect. While Amazon RDS Multi-AZ deployments provide high availability and automatic failover, they primarily focus on database redundancy rather than improving website performance. Multi-AZ deployments are not directly related to reducing response times for the website.
-
+Design High-Performing Architectures

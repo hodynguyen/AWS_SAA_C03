@@ -1,42 +1,44 @@
 # Question 55
 
-## Topic
-Design Resilient Architectures
+A shell script on an EC2 instance needs to get the instance's public and private IP addresses.
 
-## Question
-A company has a web application hosted in an On-Demand EC2 instance. You are creating a shell script that needs the instance's public and private IP addresses.
-
-What is the best way to get the instance's associated IP addresses which your shell script can use?
+What is the best way to get this information?
 
 ## Options
-A. By using a Curl or Get Command to get the latest metadata information from http://169.254.169.254/latest/meta-data/
+
+A. Use Curl to get metadata from http://169.254.169.254/latest/meta-data/
 
 B. By using IAM.
 
 C. By using a CloudWatch metric.
 
-D. By using a Curl or Get Command to get the latest user data information from http://169.254.169.254/latest/user-data/
+D. Use Curl to get user data from http://169.254.169.254/latest/user-data/
 
 ## Correct Answer
-A
+
+**A. Use Curl to get metadata from http://169.254.169.254/latest/meta-data/**
 
 ## Explanation
-Instance metadata is data about your EC2 instance that you can use to configure or manage the running instance. Because your instance metadata is available from your running instance, you do not need to use the Amazon EC2 console or the AWS CLI. This can be helpful when you're writing scripts to run from your instance. For example, you can access the local IP address of your instance from instance metadata to manage a connection to an external application.
 
-To view the private IPv4 address, public IPv4 address, and all other categories of instance metadata from within a running instance, use the following URL:
+Instance metadata is available from within the running instance at:
+- `http://169.254.169.254/latest/meta-data/local-ipv4` - Private IP
+- `http://169.254.169.254/latest/meta-data/public-ipv4` - Public IP
 
-http://169.254.169.254/latest/meta-data/
+No external API calls or credentials needed—accessible only from the instance itself.
 
-Reference:
+### Why other options are incorrect:
 
-http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+- **B** - IAM manages permissions, not instance metadata.
 
-Check out this Amazon EC2 Cheat Sheet:
+- **C** - CloudWatch metrics don't include IP addresses.
 
-https://tutorialsdojo.com/amazon-elastic-compute-cloud-amazon-ec2/
+- **D** - User data contains scripts provided at launch, not instance metadata.
 
-Tutorials Dojo's AWS Certified Solutions Architect Associate Exam Study Guide:
+## References
 
-https://tutorialsdojo.com/aws-certified-solutions-architect-associate/
+- http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+- https://tutorialsdojo.com/amazon-elastic-compute-cloud-amazon-ec2/
 
+## Domain
 
+Design Resilient Architectures

@@ -1,47 +1,45 @@
 # Question 53
 
-## Topic
-Design Resilient Architectures
+A financial application stores data in S3 in us-east-1. Data must remain available even during AZ outages or regional service failures.
 
-## Question
-A financial firm is designing an application architecture for its online trading platform that must have high availability and fault tolerance. Their Solutions Architect configured the application to use an Amazon S3 bucket located in the us-east-1 region to store large amounts of intraday financial data. The stored financial data in the bucket must not be affected even if there is an outage in one of the Availability Zones or if there's a regional service failure.
-
-What should the Architect do to avoid any costly service disruptions and ensure data durability?
+What should the Architect do to ensure data durability?
 
 ## Options
-A. Create a new S3 bucket in another region and configure Cross-Account Access to the bucket located in us-east-1.
+
+A. Create a new S3 bucket in another region and configure Cross-Account Access.
 
 B. Copy the S3 bucket to an EBS-backed EC2 instance.
 
-C. Create a Lifecycle Policy to regularly backup the S3 bucket to Amazon Glacier.
+C. Create a Lifecycle Policy to backup S3 to Glacier.
 
 D. Enable Cross-Region Replication.
 
 ## Correct Answer
-D
+
+**D. Enable Cross-Region Replication.**
 
 ## Explanation
-In this scenario, you need to enable Cross-Region Replication to ensure that your S3 bucket would not be affected even if there is an outage in one of the Availability Zones or a regional service failure in us-east-1. When you upload your data in S3, your objects are redundantly stored on multiple devices across multiple facilities within the region only, where you created the bucket. Thus, if there is an outage on the entire region, your S3 bucket will be unavailable if you do not enable Cross-Region Replication, which should make your data available to another region.
 
-Note that an Availability Zone (AZ) is more related with Amazon EC2 instances rather than Amazon S3 so if there is any outage in the AZ, the S3 bucket is usually not affected but only the EC2 instances deployed on that zone.
+Cross-Region Replication (CRR):
+- **Automatic copying**: Objects replicated to a bucket in another region
+- **Regional failure protection**: Data available even if entire region fails
+- **Versioning required**: Must be enabled on source and destination
 
-Hence, the correct answer is: Enable Cross-Region Replication.
+S3 within a single region is already resilient to AZ failures (3+ AZ redundancy).
 
-References:
+### Why other options are incorrect:
 
-https://aws.amazon.com/s3/faqs/
+- **A** - Cross-Account Access doesn't replicate data to another region.
 
-https://aws.amazon.com/s3/features/replication/
+- **B** - EBS is less durable than S3 and tied to a single AZ.
 
-Check out this Amazon S3 Cheat Sheet:
+- **C** - Glacier lifecycle archives data but keeps it in the same region.
 
-https://tutorialsdojo.com/amazon-s3/
+## References
 
-**Why other options are incorrect:**
+- https://aws.amazon.com/s3/features/replication/
+- https://tutorialsdojo.com/amazon-s3/
 
-- The option that says: Copy the S3 bucket to an EBS-backed EC2 instance is incorrect because EBS is not as durable as Amazon S3. Moreover, if the Availability Zone where the volume is hosted goes down then the data will also be inaccessible.
+## Domain
 
-- The option that says: Create a Lifecycle Policy to regularly backup the S3 bucket to Amazon Glacier is incorrect because Glacier is primarily used for data archival. You also need to replicate your data to another region for better durability.
-
-- The option that says: Create a new S3 bucket in another region and configure Cross-Account Access to the bucket located in us-east-1 is incorrect because Cross-Account Access in Amazon S3 is primarily used if you want to grant access to your objects to another AWS account, and not just to another AWS Region. For example, Account MANILA can grant another AWS account (Account CEBU) permission to access its resources such as buckets and objects. S3 Cross-Account Access does not replicate data from one region to another. A better solution is to enable Cross-Region Replication (CRR) instead.
-
+Design Resilient Architectures

@@ -1,51 +1,42 @@
 # Question 60
 
-## Topic
-Design Resilient Architectures
+An application requires a minimum of 4 EC2 instances running at all times for fault tolerance.
 
-## Question
-A large multinational investment bank has a web application that requires a minimum of 4 EC2 instances to run to ensure that it can cater to its users across the globe. You are instructed to ensure fault tolerance of this system.
-
-Which of the following is the best option?
+Which deployment is the best option?
 
 ## Options
-A. Deploy an Auto Scaling group with 2 instances in each of 2 Availability Zones behind an Application Load Balancer.
 
-B. Deploy an Auto Scaling group with 4 instances in one Availability Zone behind an Application Load Balancer.
+A. 2 instances in each of 2 Availability Zones behind ALB.
 
-C. Deploy an Auto Scaling group with 1 instance in each of 4 Availability Zones behind an Application Load Balancer.
+B. 4 instances in one Availability Zone behind ALB.
 
-D. Deploy an Auto Scaling group with 2 instances in each of 3 Availability Zones behind an Application Load Balancer.
+C. 1 instance in each of 4 Availability Zones behind ALB.
+
+D. 2 instances in each of 3 Availability Zones behind ALB.
 
 ## Correct Answer
-D
+
+**D. 2 instances in each of 3 Availability Zones behind ALB.**
 
 ## Explanation
-Fault Tolerance is the ability of a system to remain in operation even if some of the components used to build the system fail. In AWS, this means that in the event of server fault or system failures, the number of running EC2 instances should not fall below the minimum number of instances required by the system for it to work properly. So if the application requires a minimum of 4 instances, there should be at least 4 instances running in case there is an outage in one of the Availability Zones or if there are server issues.
 
-One of the differences between Fault Tolerance and High Availability is that the former refers to the minimum number of running instances. For example, you have a system that requires a minimum of 4 running instances and currently has 6 running instances deployed in two Availability Zones. There was a component failure in one of the Availability Zones which knocks out 3 instances. In this case, the system can still be regarded as Highly Available since there are still instances running that can accommodate the requests. However, it is not Fault-Tolerant since the required minimum of four instances has not been met.
+Fault tolerance = maintain minimum instances even if one AZ fails:
+- **2+2+2 in 3 AZs**: If one AZ fails → 4 instances remain ✓
+- Total 6 instances ensures 4 survive any single AZ failure
 
-Hence, the correct answer is: Deploy an Auto Scaling group with 2 instances in each of 3 Availability Zones behind an Application Load Balancer.
+### Why other options are incorrect:
 
-References:
+- **A** - 2+2 in 2 AZs: If one fails → only 2 instances remain.
 
-https://media.amazonwebservices.com/AWS_Building_Fault_Tolerant_Applications.pdf
+- **B** - All in one AZ: If it fails → 0 instances remain.
 
-https://d1.awsstatic.com/whitepapers/aws-building-fault-tolerant-applications.pdf
+- **C** - 1 per AZ: If one fails → only 3 instances remain.
 
-AWS Overview Cheat Sheets:
+## References
 
-https://tutorialsdojo.com/aws-cheat-sheets-overview/
+- https://media.amazonwebservices.com/AWS_Building_Fault_Tolerant_Applications.pdf
+- https://tutorialsdojo.com/amazon-ec2/
 
-Tutorials Dojo's AWS Certified Solutions Architect Associate Exam Study Guide:
+## Domain
 
-https://tutorialsdojo.com/aws-certified-solutions-architect-associate/
-
-**Why other options are incorrect:**
-
-- The option that says: Deploy an Auto Scaling group with 2 instances in each of 2 Availability Zones behind an Application Load Balancer is incorrect because if one Availability Zone went out, there will only be 2 running instances available out of the required 4 minimum instances. Although the Auto Scaling group can spin up another 2 instances, the fault tolerance of the web application has already been compromised.
-
-- The option that says: Deploy an Auto Scaling group with 4 instances in one Availability Zone behind an Application Load Balancer is incorrect because if the Availability Zone went out, there will be no running instance available to accommodate the request.
-
-- The option that says: Deploy an Auto Scaling group with 1 instance in each of 4 Availability Zones behind an Application Load Balancer is incorrect because if one Availability Zone went out, there will only be 3 instances available to accommodate the request.
-
+Design Resilient Architectures

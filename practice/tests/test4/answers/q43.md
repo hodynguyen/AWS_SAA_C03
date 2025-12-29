@@ -1,129 +1,54 @@
 # Question 43
 
-## Topic
-Design Secure Architectures
+A company uses AWS Directory Service with an AD connector. The following identity-based policy is attached:
 
-## Question
-A company is using the AWS Directory Service to integrate their on-premises Microsoft Active Directory (AD) domain with their Amazon EC2 instances via an AD connector. The below identity-based policy is attached to the IAM Identities that use the AWS Directory service:
-
+```json
 {
-
-"Version":"2012-10-17",
-
-"Statement":[
-
-{
-
-"Sid":"DirectoryTutorialsDojo1234",
-
-"Effect":"Allow",
-
-"Action":[
-
-"ds:*"
-
-],
-
-"Resource":"arn:aws:ds:us-east-1:987654321012:directory/d-1234567890"
-
-},
-
-{
-
-"Effect":"Allow",
-
-"Action":[
-
-"ec2:*"
-
-],
-
-"Resource":"*"
-
+  "Statement": [{
+    "Sid": "DirectoryTutorialsDojo1234",
+    "Effect": "Allow",
+    "Action": ["ds:*"],
+    "Resource": "arn:aws:ds:us-east-1:987654321012:directory/d-1234567890"
+  }]
 }
+```
 
-]
-
-}
-
-Which of the following BEST describes what the above resource policy does?
+What does this policy allow?
 
 ## Options
-A. Allows all AWS Directory Service (ds) calls as long as the resource contains the directory ID:  987654321012
 
-B. Allows all AWS Directory Service (ds) calls as long as the resource contains the directory ID: DirectoryTutorialsDojo1234
+A. Allows all ds calls for directory ID: 987654321012
 
-C. Allows all AWS Directory Service (ds) calls as long as the resource contains the directory name of: DirectoryTutorialsDojo1234
+B. Allows all ds calls for directory ID: DirectoryTutorialsDojo1234
 
-D. Allows all AWS Directory Service (ds) calls as long as the resource contains the directory ID: d-1234567890
+C. Allows all ds calls for directory name: DirectoryTutorialsDojo1234
+
+D. Allows all ds calls for directory ID: d-1234567890
 
 ## Correct Answer
-D
+
+**D. Allows all ds calls for directory ID: d-1234567890**
 
 ## Explanation
-AWS Directory Service provides multiple ways to use Amazon Cloud Directory and Microsoft Active Directory (AD) with other AWS services. Directories store information about users, groups, and devices, and administrators use them to manage access to information and resources. AWS Directory Service provides multiple directory choices for customers who want to use existing Microsoft AD or Lightweight Directory Access Protocol (LDAP)–aware applications in the cloud. It also offers those same choices to developers who need a directory to manage users, groups, devices, and access.
 
-Every AWS resource is owned by an AWS account, and permissions to create or access the resources are governed by permissions policies. An account administrator can attach permissions policies to IAM identities (that is, users, groups, and roles), and some services (such as AWS Lambda) also support attaching permissions policies to resources.
+The ARN structure is: `arn:aws:ds:region:account-id:directory/directory-id`
+- **987654321012**: AWS account ID
+- **d-1234567890**: Directory ID (the actual resource identifier)
+- **DirectoryTutorialsDojo1234**: Just the Sid (Statement ID) for policy management
 
-The following resource policy example allows all ds calls as long as the resource contains the directory ID "d-1234567890".
+The policy allows all Directory Service actions on the specific directory `d-1234567890`.
 
-{
+### Why other options are incorrect:
 
-"Version":"2012-10-17",
+- **A** - 987654321012 is the AWS account ID, not the directory ID.
 
-"Statement":[
+- **B, C** - DirectoryTutorialsDojo1234 is a Sid identifier for the policy statement, not a directory ID or name.
 
-{
+## References
 
-"Sid":"VisualEditor0",
+- https://docs.aws.amazon.com/directoryservice/latest/admin-guide/what_is.html
+- https://tutorialsdojo.com/aws-directory-service/
 
-"Effect":"Allow",
+## Domain
 
-"Action":[
-
-"ds:*"
-
-],
-
-"Resource":"arn:aws:ds:us-east-1:123456789012:directory/d-1234567890"
-
-},
-
-{
-
-"Effect":"Allow",
-
-"Action":[
-
-"ec2:*"
-
-],
-
-"Resource":"*"
-
-}
-
-]
-
-}
-
-Hence, the correct answer is the option that says: Allows all AWS Directory Service (ds) calls as long as the resource contains the directory ID: d-1234567890.
-
-References:
-
-https://docs.aws.amazon.com/directoryservice/latest/admin-guide/IAM_Auth_Access_IdentityBased.html
-
-https://docs.aws.amazon.com/directoryservice/latest/admin-guide/IAM_Auth_Access_Overview.html
-
-Check out this AWS Identity & Access Management (IAM) Cheat Sheet:
-
-https://tutorialsdojo.com/aws-identity-and-access-management-iam
-
-**Why other options are incorrect:**
-
-- The option that says: Allows all AWS Directory Service (ds) calls as long as the resource contains the directory ID: DirectoryTutorialsDojo1234 is incorrect because DirectoryTutorialsDojo1234 is the Statement ID (SID) and not the Directory ID.
-
-- The option that says: Allows all AWS Directory Service (ds) calls as long as the resource contains the directory ID: 987654321012 is incorrect because the numbers: 987654321012 is the Account ID and not the Directory ID.
-
-- The option that says: Allows all AWS Directory Service (ds) calls as long as the resource contains the directory name of: DirectoryTutorialsDojo1234 is incorrect because DirectoryTutorialsDojo1234 is the Statement ID (SID) and not the Directory name.
-
+Design Secure Architectures
