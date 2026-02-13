@@ -23,12 +23,12 @@ Detailed notes and cheat sheets based on the Udemy course, covering core AWS ser
 
 | Test | Description | Status |
 |------|-------------|--------|
-| Test 1 | Practice Exam 1 | 🔄 In Progress |
-| Test 2 | Practice Exam 2 | ⏳ Not Started |
-| Test 3 | Practice Exam 3 | ⏳ Not Started |
-| Test 4 | Practice Exam 4 | ⏳ Not Started |
-| Test 5 | Practice Exam 5 | ⏳ Not Started |
-| Test 6 | Practice Exam 6 | ⏳ Not Started |
+| Test 1 | Practice Exam 1 | ✅ Completed |
+| Test 2 | Practice Exam 2 | ✅ Completed |
+| Test 3 | Practice Exam 3 | ✅ Completed |
+| Test 4 | Practice Exam 4 | ✅ Completed |
+| Test 5 | Practice Exam 5 | ✅ Completed |
+| Test 6 | Practice Exam 6 | ✅ Completed |
 
 ## 📁 Folder Structure
 
@@ -50,8 +50,8 @@ aws-saa-c03-learning/
 ## 🎯 Goals
 
 - [ ] Complete theory foundation
-- [ ] Complete all 6 Practice Tests
-- [ ] Score >80% on all tests
+- [x] Complete all 6 Practice Tests
+- [x] Score >80% on all tests
 - [ ] Pass the SAA-C03 Exam! 🏆
 
 ## 📖 References
