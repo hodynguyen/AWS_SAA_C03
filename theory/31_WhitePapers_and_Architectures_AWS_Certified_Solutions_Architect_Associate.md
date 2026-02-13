@@ -1,0 +1,1 @@
+# 31_WhitePapers_and_Architectures_AWS_Certified_Solutions_Architect_Associate
