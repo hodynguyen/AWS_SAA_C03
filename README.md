@@ -5,12 +5,18 @@ A comprehensive repository for studying the **AWS Solutions Architect Associate 
 ## 📚 Contents
 
 ### Theory Foundation
-Core concepts and best practices from the Udemy course, covering:
-- AWS Core Services (EC2, S3, RDS, VPC, IAM, etc.)
-- High Availability & Scalability
-- Security & Compliance
-- Cost Optimization
-- Architecture Design Patterns
+Detailed notes and cheat sheets based on the Udemy course, covering core AWS services and architectural patterns. The notes are available in both **English** and **Vietnamese**.
+
+#### Covered Topics:
+- **IAM & AWS CLI**: Identity management, policies, roles, and security tools.
+- **EC2 Fundamentals**: Instance types, purchasing options, and basic networking.
+- **EC2 Solutions Architect Associate Level**: Placement groups, ENI, Hibernate, advanced concepts.
+- **EC2 Storage**: EBS, Instance Store, EFS, and volume types.
+- **High Availability & Scalability**: ELB, ASG (Auto Scaling Groups).
+- **RDS, Aurora & ElastiCache**: Relational databases, caching strategies, and database architecture.
+- **Route 53**: DNS records, routing policies, and health checks.
+- **Amazon S3**: Object storage, security, versioning, replication, and storage classes.
+- And more...
 
 ### Practice Tests
 **6 Practice Exams** to validate knowledge and exam readiness:
@@ -29,14 +35,16 @@ Core concepts and best practices from the Udemy course, covering:
 ```
 aws-saa-c03-learning/
 ├── README.md
-├── theory/              # (Coming soon) Theory notes
-└── practice/
-    ├── test1/
-    ├── test2/
-    ├── test3/
-    ├── test4/
-    ├── test5/
-    └── test6/
+├── theory/              # Theory notes and cheat sheets (Markdown)
+│   ├── 4_IAM_and_AWS_CLI.md
+│   ├── 5_EC2_Fundamentals.md
+│   ├── 6_EC2_Solutions_Architect_Associate_Level.md
+│   ├── 7_EC2_Instance_Storage.md
+│   ├── 9_AWS_Fundamentals_RDS_Aurora_ElastiCache.md
+│   ├── 10_Route_53.md
+│   ├── 12_Amazon_S3_Introduction.md
+│   └── ...
+└── practice/            # Practice exam questions and answers
 ```
 
 ## 🎯 Goals
