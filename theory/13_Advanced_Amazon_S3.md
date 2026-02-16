@@ -89,6 +89,14 @@ Lifecycle Rules help you **automate** moving data between Storage Classes or del
     *   **Data Protection**: Check if buckets are encrypted or replicated.
     *   **default dashboard**: Free, pre-configured.
 
+## 7. S3 Analytics (Storage Class Analysis)
+
+*   **Purpose**: Analyze access patterns to determine the **optimal time** to transition objects to a cheaper storage class (specifically Standard-IA or One Zone-IA).
+*   **Output**: Generates reports (CSV) and visualization charts showing potential cost savings.
+*   **Key Difference from Storage Lens**:
+    *   **S3 Analytics**: Focuses on **optimizing Lifecycle Rules** (e.g., "Move data after 45 days to save X%").
+    *   **S3 Storage Lens**: Focuses on **centralized visibility** of storage usage and activity trends across the entire organization.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -181,3 +189,11 @@ Có 2 loại hành động chính (Actions):
     *   **Tối ưu chi phí (Cost Efficiency)**: Tìm ra các bucket ít dùng (coldest), các bản upload chưa hoàn thành.
     *   **Bảo vệ dữ liệu (Data Protection)**: Kiểm tra mã hóa hoặc replication đã được bật chưa.
     *   **Default dashboard**: Miễn phí, có sẵn.
+
+## 7. S3 Analytics (Phân tích lớp lưu trữ)
+
+*   **Mục đích**: Phân tích tần suất truy cập để xác định **thời điểm tối ưu** để chuyển object sang lớp lưu trữ rẻ hơn (thường là Standard-IA hoặc One Zone-IA).
+*   **Kết quả**: Tạo báo cáo (CSV) và biểu đồ trực quan gợi ý mức tiết kiệm chi phí.
+*   **Khác biệt chính với Storage Lens**:
+    *   **S3 Analytics**: Tập trung vào việc **tối ưu hóa Lifecycle Rules** (ví dụ: "Nên chuyển dữ liệu sau 45 ngày để tiết kiệm X%").
+    *   **S3 Storage Lens**: Tập trung vào **tầm nhìn tổng quan** về việc sử dụng lưu trữ và xu hướng truy cập trên toàn bộ tổ chức (Organization-wide).
