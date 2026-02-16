@@ -50,6 +50,18 @@ There are 4 main types of SSE:
 *   You can enforce default encryption on a bucket so that any new object uploaded without encryption headers will be automatically encrypted (usually SSE-S3 or SSE-KMS).
 *   **Note**: Effective Jan 2023, AWS S3 automatically enables **SSE-S3** as the base level of encryption for all new objects if no other method is specified.
 
+## 2. S3 CORS (Cross-Origin Resource Sharing)
+
+*   **Origin**: Defines where a request comes from (Scheme + Host + Port).
+    *   Example: `https://www.example.com` (Scheme: https, Host: www.example.com, Port: 443 implied).
+*   **Concept**: Browsers by default block requests from one domain (origin) to another domain (e.g., website `example.com` trying to fetch image from `mybucket.s3.amazonaws.com`). This is a security feature called **Same-Origin Policy**.
+*   **Use Case**: You host a static website on S3 or another domain, and your website's JavaScript needs to make API calls or fetch resources from *another* S3 bucket.
+*   **Configuration**: You must configure **CORS Rules** on the S3 bucket to allow Cross-Origin requests.
+    *   **Allowed Origins**: List of domains allowed (e.g., `https://www.example.com` or `*`).
+    *   **Allowed Methods**: GET, PUT, POST, DELETE, HEAD.
+    *   **Allowed Headers**: Headers the client can send.
+*   **Exam Tip**: If you see "Cross-Origin Request Blocked" error -> You need to enable CORS on the S3 bucket.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -103,3 +115,15 @@ Có 4 loại SSE chính:
 ### D. Default Encryption
 *   Bạn có thể cài đặt mã hóa mặc định cho bucket để mọi object mới được upload lên mà không có header mã hóa sẽ tự động được mã hóa (thường là SSE-S3 hoặc SSE-KMS).
 *   **Lưu ý**: Từ tháng 1/2023, AWS S3 đã tự động bật **SSE-S3** làm chuẩn mã hóa cơ bản cho mọi object mới nếu không chỉ định phương pháp khác.
+
+## 2. S3 CORS (Chia sẻ tài nguyên chéo nguồn)
+
+*   **Origin (Nguồn)**: Định nghĩa nơi request xuất phát (Scheme + Host + Port).
+    *   Ví dụ: `https://www.example.com` (Scheme: https, Host: www.example.com, Port: 443 ngầm định).
+*   **Khái niệm**: Mặc định, trình duyệt chặn các request từ domain này (origin) sang domain khác (ví dụ: website `example.com` cố gắng lấy ảnh từ `mybucket.s3.amazonaws.com`). Đây là tính năng bảo mật **Same-Origin Policy**.
+*   **Use Case**: Bạn host một web tĩnh trên S3 hoặc domain khác, và JavaScript của web cần gọi API hoặc lấy tài nguyên từ *một S3 bucket khác*.
+*   **Cấu hình**: Bạn phải cấu hình **CORS Rules** trên S3 bucket đích để cho phép.
+    *   **Allowed Origins**: Danh sách domain được phép (ví dụ: `https://www.example.com` hoặc `*`).
+    *   **Allowed Methods**: GET, PUT, POST, DELETE, HEAD.
+    *   **Allowed Headers**: Các header được phép gửi.
+*   **Exam Tip**: Nếu thấy lỗi "Cross-Origin Request Blocked" -> Cần bật CORS trên S3 bucket.
