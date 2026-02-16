@@ -49,6 +49,16 @@ Lifecycle Rules help you **automate** moving data between Storage Classes or del
     *   Requester must be an **Authenticated AWS User** (No Anonymous access).
     *   Requester must include `x-amz-request-payer` header in the request, otherwise access is denied (403).
 
+## 3. S3 Event Notifications
+
+*   **Concept**: S3 can send notifications when certain events happen in your bucket (e.g., New object created, Object removed, Object restored, Replication events).
+*   **Destinations**:
+    *   **SNS (Simple Notification Service)**: Send to a Topic (e.g., email, SMS).
+    *   **SQS (Simple Queue Service)**: Send to a Queue (for decoupling/processing).
+    *   **Lambda Function**: Trigger code execution (e.g., generate thumbnail when image is uploaded).
+*   **Amazon EventBridge**: Newer integration, allows for advanced filtering and routing to many more destinations (over 18 AWS services).
+*   **Permissions**: The destination resource (SNS/SQS/Lambda) must have an **Access Policy** allowing S3 to publish messages to it.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -101,3 +111,13 @@ Có 2 loại hành động chính (Actions):
 *   **Yêu cầu kỹ thuật**:
     *   Requester phải là **Authenticated AWS User** (Không hỗ trợ Anonymous).
     *   Phải thêm header `x-amz-request-payer` vào request, nếu không sẽ bị lỗi 403.
+
+## 3. S3 Event Notifications (Thông báo sự kiện)
+
+*   **Khái niệm**: S3 có thể gửi thông báo khi có sự kiện xảy ra trong bucket (ví dụ: tạo object mới, xóa object, restore, replication...).
+*   **Điểm đến (Destinations)**:
+    *   **SNS (Simple Notification Service)**: Gửi đến Topic (email, SMS).
+    *   **SQS (Simple Queue Service)**: Gửi đến Queue (để xử lý bất đồng bộ).
+    *   **Lambda Function**: Kích hoạt code xử lý (ví dụ: tạo thumbnail khi upload ảnh).
+*   **Amazon EventBridge**: Cách tích hợp mới hơn, cho phép filter mạnh mẽ hơn và route đến nhiều đích hơn (hơn 18 dịch vụ AWS).
+*   **Permissions**: Resource đích (SNS/SQS/Lambda) phải có **Access Policy** cho phép S3 gửi tin nhắn đến.
