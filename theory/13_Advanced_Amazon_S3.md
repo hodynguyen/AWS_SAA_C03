@@ -59,6 +59,36 @@ Lifecycle Rules help you **automate** moving data between Storage Classes or del
 *   **Amazon EventBridge**: Newer integration, allows for advanced filtering and routing to many more destinations (over 18 AWS services).
 *   **Permissions**: The destination resource (SNS/SQS/Lambda) must have an **Access Policy** allowing S3 to publish messages to it.
 
+## 4. S3 Performance
+
+*   **Baseline Performance**:
+    *   Automatically scales to high request rates.
+    *   Latency: 100-200 ms.
+    *   3,500 PUT/COPY/POST/DELETE per second per prefix.
+    *   5,500 GET/HEAD per second per prefix.
+*   **Optimization Techniques**:
+    *   **Multi-Part Upload**: Required for files > 5GB, recommended for files > 100MB. Uploads parts in parallel (faster, retryable).
+    *   **S3 Transfer Acceleration**: Uses AWS Edge Locations to speed up uploads over long distances (uploads to Edge -> AWS backbone -> S3 Bucket).
+    *   **S3 Byte-Range Fetches**: Parallelize GETs by requesting specific byte ranges. Speed up downloads.
+
+## 5. S3 Batch Operations
+
+*   **Purpose**: Perform bulk actions on billions of objects with a single API request or console click.
+*   **How it works**:
+    1.  Provide a list of objects (S3 Inventory or CSV).
+    2.  Select operation (Replace tags, Copy, Restore from Glacier, Invoke Lambda).
+    3.  S3 manages retries, progress tracking, and completion reports.
+*   **Use Cases**: Modifying object metadata, copying objects between buckets, encrypting unencrypted objects.
+
+## 6. S3 Storage Lens
+
+*   **Concept**: An analytics dashboard to gain visibility into object storage usage and activity.
+*   **Scope**: Can view across Organization, Region, Account, or Bucket level.
+*   **Benefits**:
+    *   **Cost Efficiency**: Identify coldest buckets, incomplete multipart uploads, etc.
+    *   **Data Protection**: Check if buckets are encrypted or replicated.
+    *   **default dashboard**: Free, pre-configured.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -121,3 +151,33 @@ Có 2 loại hành động chính (Actions):
     *   **Lambda Function**: Kích hoạt code xử lý (ví dụ: tạo thumbnail khi upload ảnh).
 *   **Amazon EventBridge**: Cách tích hợp mới hơn, cho phép filter mạnh mẽ hơn và route đến nhiều đích hơn (hơn 18 dịch vụ AWS).
 *   **Permissions**: Resource đích (SNS/SQS/Lambda) phải có **Access Policy** cho phép S3 gửi tin nhắn đến.
+
+## 4. S3 Performance (Hiệu năng)
+
+*   **Baseline Performance**:
+    *   Tự động scale để đáp ứng lượng request cao.
+    *   Độ trễ: 100-200 ms.
+    *   3,500 PUT/COPY/POST/DELETE mỗi giây trên mỗi prefix.
+    *   5,500 GET/HEAD mỗi giây trên mỗi prefix.
+*   **Kỹ thuật Tối ưu hóa**:
+    *   **Multi-Part Upload**: Bắt buộc cho file > 5GB, khuyến nghị cho file > 100MB. Upload song song các phần (nhanh hơn, có thể retry).
+    *   **S3 Transfer Acceleration**: Sử dụng AWS Edge Locations để tăng tốc upload qua khoảng cách xa (upload lên Edge -> AWS backbone -> S3 Bucket).
+    *   **S3 Byte-Range Fetches**: Tải song song bằng cách request các dải byte cụ thể (Range header). Tăng tốc download.
+
+## 5. S3 Batch Operations
+
+*   **Mục đích**: Thực hiện hành động hàng loạt trên hàng tỷ object chỉ với 1 API request.
+*   **Cách hoạt động**:
+    1.  Cung cấp danh sách object (S3 Inventory hoặc file CSV).
+    2.  Chọn hành động (Thay đổi tag, Copy, Restore từ Glacier, gọi Lambda).
+    3.  S3 tự quản lý tiến trình, retry và báo cáo kết quả.
+*   **Ứng dụng**: Chỉnh sửa metadata, copy object giữa các bucket, mã hóa object cũ.
+
+## 6. S3 Storage Lens
+
+*   **Khái niệm**: Dashboard phân tích giúp nhìn thấy toàn cảnh về sử dụng lưu trữ và hoạt động của object storage.
+*   **Phạm vi**: Xem được trên cấp Organization, Region, Account, hoặc Bucket.
+*   **Lợi ích**:
+    *   **Tối ưu chi phí (Cost Efficiency)**: Tìm ra các bucket ít dùng (coldest), các bản upload chưa hoàn thành.
+    *   **Bảo vệ dữ liệu (Data Protection)**: Kiểm tra mã hóa hoặc replication đã được bật chưa.
+    *   **Default dashboard**: Miễn phí, có sẵn.
