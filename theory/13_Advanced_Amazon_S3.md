@@ -39,6 +39,16 @@ Lifecycle Rules help you **automate** moving data between Storage Classes or del
     *   Can apply rule to **whole bucket** OR **a subset** (using Prefix or Tags).
     *   *Example*: Only transition files in `/logs` folder or files with tag `Department=HR`.
 
+## 2. S3 Requester Pays
+
+*   **Default**: **Bucket Owner** pays for all costs (storage + data transfer).
+*   **Requester Pays Model**:
+    *   **Who pays?**: The **Requester** pays for request and data transfer costs. Bucket owner only pays for storage.
+    *   **Use Case**: Sharing large datasets (Big Data) with the community or customers without bearing the huge data transfer costs.
+*   **Technical Requirements**:
+    *   Requester must be an **Authenticated AWS User** (No Anonymous access).
+    *   Requester must include `x-amz-request-payer` header in the request, otherwise access is denied (403).
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -81,3 +91,13 @@ Có 2 loại hành động chính (Actions):
 4.  **Scope (Phạm vi):**
     *   Có thể apply rule cho **toàn bộ bucket** HOẶC **một phần** (dùng Prefix hoặc Tags).
     *   *Ví dụ*: Chỉ chuyển các file trong folder `/logs` hoặc các file có tag `Department=HR`.
+
+## 2. S3 Requester Pays (Người gửi trả tiền)
+
+*   **Mặc định**: **Bucket Owner** trả toàn bộ chi phí (lưu trữ + băng thông).
+*   **Mô hình Requester Pays**:
+    *   **Ai trả tiền?**: **Người gửi request (Requester)** trả tiền phí request và phí truyền tải dữ liệu (data transfer). Chủ bucket chỉ trả tiền lưu trữ.
+    *   **Khi nào dùng?**: Chia sẻ dữ liệu lớn (Big Data) cho cộng đồng/khách hàng mà không muốn gánh chi phí download.
+*   **Yêu cầu kỹ thuật**:
+    *   Requester phải là **Authenticated AWS User** (Không hỗ trợ Anonymous).
+    *   Phải thêm header `x-amz-request-payer` vào request, nếu không sẽ bị lỗi 403.
