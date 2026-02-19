@@ -172,6 +172,40 @@ Both features implement the **WORM (Write Once Read Many)** model — once data 
 *   **Governance Mode**: Special IAM users can bypass.
 *   **Legal Hold**: No expiration, independent of retention, toggle on/off with IAM permission.
 
+## 7. S3 Access Points
+
+S3 Access Points simplify managing access to shared S3 buckets by creating **dedicated access endpoints** with their own permissions.
+
+### Problem It Solves
+*   When many users/applications/teams share a single S3 bucket, the **Bucket Policy becomes extremely complex** (hundreds of lines).
+*   Hard to manage, error-prone, and difficult to audit.
+
+### How It Works
+*   Each Access Point has:
+    *   Its own **DNS name** (Internet or VPC origin).
+    *   Its own **Access Point Policy** (similar to Bucket Policy but scoped to the access point).
+*   You can create **separate Access Points** for different use cases:
+    *   Example: `finance-ap` → grants R/W to `/finance/` prefix only.
+    *   Example: `analytics-ap` → grants Read-only to `/analytics/` prefix only.
+*   Each Access Point policy is **simple and focused**, replacing one massive bucket policy.
+
+### Access Point Types
+*   **Internet Origin**: Accessible from the internet.
+*   **VPC Origin**: Accessible **only from within a specific VPC**. You must create a **VPC Endpoint (Gateway or Interface)** to access it. Adds extra layer of network security.
+
+### S3 Object Lambda Access Point
+*   Allows you to **transform data on-the-fly** using an **AWS Lambda function** before returning the object to the caller.
+*   Use Cases:
+    *   Redacting PII (personally identifiable information) before returning data.
+    *   Converting data formats (e.g., XML → JSON).
+    *   Resizing/watermarking images on download.
+*   How: Caller → **S3 Object Lambda Access Point** → Lambda function → **Supporting Access Point** → S3 Bucket.
+
+### Exam Tips
+*   S3 Access Points = **simplify complex bucket policies** by creating focused, per-use-case endpoints.
+*   **VPC Origin** Access Point = restrict access to a specific VPC only.
+*   **S3 Object Lambda** = transform objects on the fly before delivery (redact, convert, resize).
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -347,3 +381,37 @@ Cả hai tính năng đều triển khai mô hình **WORM (Write Once Read Many)
 *   **Compliance Mode**: Không ai có thể xóa, kể cả root.
 *   **Governance Mode**: User có quyền IAM đặc biệt có thể bypass.
 *   **Legal Hold**: Không có thời hạn, độc lập với retention, bật/tắt bằng IAM permission.
+
+## 7. S3 Access Points (Điểm truy cập S3)
+
+S3 Access Points đơn giản hóa việc quản lý truy cập vào S3 bucket dùng chung bằng cách tạo **các endpoint truy cập riêng biệt** với quyền riêng.
+
+### Vấn đề nó giải quyết
+*   Khi nhiều user/ứng dụng/team cùng dùng chung một S3 bucket, **Bucket Policy trở nên cực kỳ phức tạp** (hàng trăm dòng).
+*   Khó quản lý, dễ sai sót, và khó kiểm toán.
+
+### Cách hoạt động
+*   Mỗi Access Point có:
+    *   **DNS name** riêng (Internet hoặc VPC origin).
+    *   **Access Point Policy** riêng (giống Bucket Policy nhưng chỉ áp dụng cho access point đó).
+*   Bạn có thể tạo **các Access Point riêng biệt** cho các use case khác nhau:
+    *   Ví dụ: `finance-ap` → cấp quyền R/W chỉ cho prefix `/finance/`.
+    *   Ví dụ: `analytics-ap` → cấp quyền Read-only chỉ cho prefix `/analytics/`.
+*   Mỗi access point policy **đơn giản và tập trung**, thay thế một bucket policy khổng lồ.
+
+### Các loại Access Point
+*   **Internet Origin**: Truy cập từ internet.
+*   **VPC Origin**: Chỉ truy cập **từ trong một VPC cụ thể**. Cần tạo **VPC Endpoint (Gateway hoặc Interface)** để truy cập. Thêm lớp bảo mật mạng.
+
+### S3 Object Lambda Access Point
+*   Cho phép **biến đổi dữ liệu ngay lập tức** bằng **AWS Lambda function** trước khi trả object cho người gọi.
+*   Use Cases:
+    *   Ẩn thông tin nhạy cảm PII trước khi trả dữ liệu.
+    *   Chuyển đổi định dạng (ví dụ: XML → JSON).
+    *   Resize/watermark ảnh khi download.
+*   Luồng: Caller → **S3 Object Lambda Access Point** → Lambda function → **Supporting Access Point** → S3 Bucket.
+
+### Exam Tips
+*   S3 Access Points = **đơn giản hóa bucket policy phức tạp** bằng cách tạo endpoint riêng cho từng use case.
+*   **VPC Origin** Access Point = giới hạn truy cập chỉ trong một VPC.
+*   **S3 Object Lambda** = biến đổi object ngay lập tức trước khi trả về (ẩn PII, chuyển đổi, resize).
