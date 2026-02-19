@@ -62,6 +62,30 @@ There are 4 main types of SSE:
     *   **Allowed Headers**: Headers the client can send.
 *   **Exam Tip**: If you see "Cross-Origin Request Blocked" error -> You need to enable CORS on the S3 bucket.
 
+## 3. S3 MFA Delete
+
+MFA Delete adds an extra layer of protection by requiring **Multi-Factor Authentication (MFA)** for certain critical S3 operations.
+
+### How It Works
+*   **Prerequisite**: **Versioning must be enabled** on the bucket. MFA Delete only works with versioned buckets.
+*   **MFA Required For**:
+    *   **Permanently deleting** an object version (not just adding a delete marker).
+    *   **Suspending versioning** on the bucket.
+*   **MFA NOT Required For**:
+    *   Enabling versioning.
+    *   Listing deleted versions.
+    *   Adding a delete marker (soft delete).
+
+### Configuration
+*   **Only the Bucket Owner (root account)** can enable/disable MFA Delete.
+*   Cannot be enabled via the AWS Console — must use the **AWS CLI** or **API**.
+*   Uses MFA device (virtual or hardware) to generate a code for authentication.
+
+### Exam Tips
+*   MFA Delete = **extra protection against accidental permanent deletion**.
+*   If you see a question about preventing accidental deletion of S3 objects → think **Versioning + MFA Delete**.
+*   Remember: **root account only**, **CLI/API only** (not Console).
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -127,3 +151,27 @@ Có 4 loại SSE chính:
     *   **Allowed Methods**: GET, PUT, POST, DELETE, HEAD.
     *   **Allowed Headers**: Các header được phép gửi.
 *   **Exam Tip**: Nếu thấy lỗi "Cross-Origin Request Blocked" -> Cần bật CORS trên S3 bucket.
+
+## 3. S3 MFA Delete (Xóa có xác thực đa yếu tố)
+
+MFA Delete thêm một lớp bảo vệ bằng cách yêu cầu **Xác thực đa yếu tố (MFA)** cho một số thao tác quan trọng trên S3.
+
+### Cách hoạt động
+*   **Điều kiện tiên quyết**: **Phải bật Versioning** trên bucket. MFA Delete chỉ hoạt động với bucket đã bật versioning.
+*   **Cần MFA khi**:
+    *   **Xóa vĩnh viễn** một phiên bản object (không phải chỉ thêm delete marker).
+    *   **Tạm dừng (suspend) versioning** trên bucket.
+*   **KHÔNG cần MFA khi**:
+    *   Bật versioning.
+    *   Liệt kê các phiên bản đã xóa.
+    *   Thêm delete marker (xóa mềm).
+
+### Cấu hình
+*   **Chỉ Bucket Owner (tài khoản root)** mới có thể bật/tắt MFA Delete.
+*   Không thể bật qua AWS Console — phải dùng **AWS CLI** hoặc **API**.
+*   Sử dụng thiết bị MFA (ảo hoặc vật lý) để tạo mã xác thực.
+
+### Exam Tips
+*   MFA Delete = **bảo vệ thêm chống xóa vĩnh viễn nhầm**.
+*   Nếu thấy câu hỏi về ngăn chặn xóa nhầm S3 objects → nghĩ đến **Versioning + MFA Delete**.
+*   Ghi nhớ: **chỉ tài khoản root**, **chỉ CLI/API** (không dùng Console được).
