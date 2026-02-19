@@ -108,6 +108,32 @@ S3 Access Logs allow you to record and monitor **all requests** made to an S3 bu
 *   Logging bucket must be in the **same region**.
 *   Remember the **logging loop** warning — it's a classic exam trap.
 
+## 5. S3 Pre-signed URLs
+
+Pre-signed URLs allow you to give **temporary access** to a specific S3 object without making it public or sharing your credentials.
+
+### How It Works
+*   You generate a URL that is **pre-signed** with your credentials and has an **expiration time**.
+*   Anyone with the URL can perform the allowed action (GET = download, PUT = upload) until the URL expires.
+*   The URL inherits the **permissions of the user who generated it** (via IAM).
+
+### Generation
+*   Can be generated using **S3 Console**, **AWS CLI**, or **SDK**.
+*   **S3 Console**: Max expiration = **12 hours**.
+*   **AWS CLI**: Default expiration = **3600 seconds** (1 hour), max = **168 hours** (7 days) with `--expires-in` parameter.
+
+### Use Cases
+*   Allow a **logged-in user** to download a premium video from your S3 bucket.
+*   Allow a user to **upload a file** to a specific location in your bucket (e.g., profile picture upload).
+*   Generate a **temporary URL** for a file that is normally private.
+*   Share files with an **ever-changing list of users** without managing IAM users for each.
+
+### Exam Tips
+*   Pre-signed URL = **temporary, time-limited access to private S3 objects**.
+*   The URL inherits the **IAM permissions of the person who generated it**.
+*   If the generating user loses access → the pre-signed URL **stops working**.
+*   Great for: download/upload for non-AWS users, temporary sharing, dynamic user lists.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -219,3 +245,29 @@ S3 Access Logs cho phép bạn ghi lại và giám sát **tất cả các reques
 *   S3 Access Logs = **kiểm toán ai đã truy cập gì trong S3 bucket**.
 *   Logging bucket phải cùng **region**.
 *   Nhớ cảnh báo **vòng lặp log** — đây là bẫy kinh điển trong đề thi.
+
+## 5. S3 Pre-signed URLs (URL ký trước)
+
+Pre-signed URLs cho phép bạn cấp **quyền truy cập tạm thời** vào một S3 object cụ thể mà không cần public bucket hay chia sẻ credentials.
+
+### Cách hoạt động
+*   Bạn tạo một URL được **ký trước** bằng credentials của bạn và có **thời hạn hết hạn**.
+*   Bất kỳ ai có URL đều có thể thực hiện hành động được phép (GET = download, PUT = upload) cho đến khi URL hết hạn.
+*   URL **kế thừa quyền của người tạo nó** (thông qua IAM).
+
+### Cách tạo
+*   Có thể tạo bằng **S3 Console**, **AWS CLI**, hoặc **SDK**.
+*   **S3 Console**: Thời hạn tối đa = **12 giờ**.
+*   **AWS CLI**: Thời hạn mặc định = **3600 giây** (1 giờ), tối đa = **168 giờ** (7 ngày) với tham số `--expires-in`.
+
+### Use Cases
+*   Cho phép người dùng đã đăng nhập **download video premium** từ S3 bucket.
+*   Cho phép người dùng **upload file** vào một vị trí cụ thể trong bucket (ví dụ: upload ảnh đại diện).
+*   Tạo **URL tạm thời** cho file bình thường là private.
+*   Chia sẻ file với **danh sách người dùng thay đổi liên tục** mà không cần tạo IAM user cho từng người.
+
+### Exam Tips
+*   Pre-signed URL = **quyền truy cập tạm thời, có giới hạn thời gian vào S3 objects private**.
+*   URL kế thừa **quyền IAM của người tạo nó**.
+*   Nếu người tạo mất quyền → pre-signed URL **ngừng hoạt động**.
+*   Phù hợp cho: download/upload cho người dùng không có AWS, chia sẻ tạm thời, danh sách user động.
