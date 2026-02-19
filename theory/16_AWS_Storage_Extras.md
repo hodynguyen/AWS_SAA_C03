@@ -74,6 +74,65 @@ The AWS Snow Family is a set of **highly-secure, portable physical devices** use
 *   Snowball **cannot import directly into Glacier** → S3 first, then lifecycle policy.
 *   **OpsHub** = GUI tool to manage Snow devices.
 
+## 2. Amazon FSx
+
+Amazon FSx provides **fully managed, high-performance third-party file systems** on AWS. Instead of building your own file server, you launch a managed FSx file system.
+
+### A. FSx for Windows File Server
+*   Fully managed **Windows native** shared file system.
+*   Built on **SMB protocol** and **Windows NTFS**.
+*   Supports **Active Directory (AD)** integration, ACLs, user quotas.
+*   Can be mounted on **Linux EC2 instances** as well.
+*   Supports **Microsoft's Distributed File System (DFS) Namespaces** — group files across multiple FS.
+*   **Performance**: Scales up to 10s of GB/s, millions of IOPS, 100s PB of data.
+*   **Storage**: SSD (low-latency) or HDD (broad spectrum).
+*   **Multi-AZ** for high availability.
+*   Data is backed up daily to **S3**.
+
+### B. FSx for Lustre
+*   **Lustre** = Linux + Cluster — a high-performance **parallel distributed file system**.
+*   Designed for **High Performance Computing (HPC)**.
+*   Use Cases: Machine Learning, video processing, financial modeling, electronic design automation.
+*   **Performance**: Scales up to 100s GB/s, millions of IOPS, sub-millisecond latencies.
+*   **S3 Integration**: Can **read from S3** as a file system (lazy loading) and **write results back to S3**.
+*   **Storage**: SSD (low-latency, IOPS intensive) or HDD (throughput intensive).
+*   **Deployment Options**:
+    *   **Scratch**: Temporary storage, no replication, high burst (6x faster). Use for short-term processing.
+    *   **Persistent**: Long-term storage, data replicated within same AZ. Use for long-term sensitive data.
+
+### C. FSx for NetApp ONTAP
+*   Managed **NetApp ONTAP** file system on AWS.
+*   Compatible with **NFS, SMB, iSCSI** protocols.
+*   Works with **Linux, Windows, macOS, VMware Cloud on AWS**.
+*   Features: Auto-scaling storage, snapshots, replication, compression, data deduplication, point-in-time cloning.
+*   Great for **moving NAS workloads** to AWS.
+
+### D. FSx for OpenZFS
+*   Managed **OpenZFS** file system on AWS.
+*   Compatible with **NFS** protocol.
+*   Works with **Linux, Windows, macOS**.
+*   **Performance**: Up to 1,000,000 IOPS, 0.5ms latency.
+*   Features: Snapshots, compression, point-in-time cloning (helpful for testing).
+*   Great for **moving ZFS workloads** to AWS.
+
+### FSx Comparison
+
+| Feature | Windows File Server | Lustre | NetApp ONTAP | OpenZFS |
+|---|---|---|---|---|
+| **Protocol** | SMB | Lustre | NFS, SMB, iSCSI | NFS |
+| **OS Support** | Windows, Linux | Linux | All (Linux, Win, Mac) | All (Linux, Win, Mac) |
+| **Best For** | Windows apps, AD | HPC, ML | NAS migration | ZFS migration |
+| **S3 Integration** | No | **Yes** | No | No |
+| **Multi-AZ** | Yes | No (Persistent: same AZ) | Yes | No |
+
+### Exam Tips
+*   **Windows File Server**: SMB protocol, Active Directory, Windows workloads.
+*   **Lustre**: HPC, Machine Learning, S3 integration (Scratch = temp, Persistent = long-term).
+*   **NetApp ONTAP**: Multi-protocol (NFS + SMB + iSCSI), NAS migration.
+*   **OpenZFS**: NFS, ZFS migration, point-in-time cloning.
+*   If you see "HPC" or "Machine Learning file system" → think **FSx for Lustre**.
+*   If you see "Windows shared file system" or "Active Directory" → think **FSx for Windows**.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -151,3 +210,62 @@ AWS Snow Family là tập hợp các **thiết bị vật lý di động, bảo 
 *   > 10PB → dùng **Snowmobile**.
 *   Snowball **không import trực tiếp vào Glacier** → S3 trước, rồi lifecycle policy.
 *   **OpsHub** = công cụ GUI để quản lý Snow devices.
+
+## 2. Amazon FSx
+
+Amazon FSx cung cấp **hệ thống file bên thứ 3 hiệu suất cao, được quản lý hoàn toàn** trên AWS. Thay vì tự dựng file server, bạn chỉ cần khởi chạy FSx.
+
+### A. FSx for Windows File Server
+*   Hệ thống file **Windows native** được quản lý hoàn toàn.
+*   Dựa trên giao thức **SMB** và **Windows NTFS**.
+*   Hỗ trợ tích hợp **Active Directory (AD)**, ACLs, user quotas.
+*   Có thể mount trên cả **Linux EC2 instances**.
+*   Hỗ trợ **Microsoft DFS Namespaces** — gộp file từ nhiều file system.
+*   **Hiệu suất**: Lên tới hàng chục GB/s, hàng triệu IOPS, hàng trăm PB dữ liệu.
+*   **Lưu trữ**: SSD (độ trễ thấp) hoặc HDD (đa dụng).
+*   **Multi-AZ** cho tính sẵn sàng cao.
+*   Dữ liệu được backup hàng ngày vào **S3**.
+
+### B. FSx for Lustre
+*   **Lustre** = Linux + Cluster — hệ thống file **phân tán song song** hiệu suất cao.
+*   Thiết kế cho **High Performance Computing (HPC)**.
+*   Use Cases: Machine Learning, xử lý video, mô hình tài chính, thiết kế điện tử.
+*   **Hiệu suất**: Lên tới 100s GB/s, hàng triệu IOPS, độ trễ dưới mili giây.
+*   **Tích hợp S3**: Có thể **đọc từ S3** như file system (lazy loading) và **ghi kết quả về S3**.
+*   **Lưu trữ**: SSD (độ trễ thấp, IOPS cao) hoặc HDD (throughput cao).
+*   **Deployment Options**:
+    *   **Scratch**: Lưu trữ tạm, không replicate, burst nhanh (6x). Dùng cho xử lý ngắn hạn.
+    *   **Persistent**: Lưu trữ dài hạn, dữ liệu replicate trong cùng AZ. Dùng cho dữ liệu nhạy cảm.
+
+### C. FSx for NetApp ONTAP
+*   Hệ thống file **NetApp ONTAP** được quản lý trên AWS.
+*   Tương thích **NFS, SMB, iSCSI**.
+*   Hoạt động với **Linux, Windows, macOS, VMware Cloud on AWS**.
+*   Tính năng: Auto-scaling storage, snapshots, replication, nén, data deduplication, point-in-time cloning.
+*   Tuyệt vời để **chuyển NAS workloads** lên AWS.
+
+### D. FSx for OpenZFS
+*   Hệ thống file **OpenZFS** được quản lý trên AWS.
+*   Tương thích giao thức **NFS**.
+*   Hoạt động với **Linux, Windows, macOS**.
+*   **Hiệu suất**: Lên tới 1,000,000 IOPS, độ trễ 0.5ms.
+*   Tính năng: Snapshots, nén, point-in-time cloning (hữu ích cho testing).
+*   Tuyệt vời để **chuyển ZFS workloads** lên AWS.
+
+### So sánh FSx
+
+| Đặc điểm | Windows File Server | Lustre | NetApp ONTAP | OpenZFS |
+|---|---|---|---|---|
+| **Giao thức** | SMB | Lustre | NFS, SMB, iSCSI | NFS |
+| **OS** | Windows, Linux | Linux | Tất cả | Tất cả |
+| **Tốt cho** | Windows apps, AD | HPC, ML | NAS migration | ZFS migration |
+| **Tích hợp S3** | Không | **Có** | Không | Không |
+| **Multi-AZ** | Có | Không (Persistent: cùng AZ) | Có | Không |
+
+### Exam Tips
+*   **Windows File Server**: SMB, Active Directory, Windows workloads.
+*   **Lustre**: HPC, Machine Learning, tích hợp S3 (Scratch = tạm, Persistent = dài hạn).
+*   **NetApp ONTAP**: Đa giao thức (NFS + SMB + iSCSI), NAS migration.
+*   **OpenZFS**: NFS, ZFS migration, point-in-time cloning.
+*   Thấy "HPC" hoặc "Machine Learning file system" → nghĩ đến **FSx for Lustre**.
+*   Thấy "Windows shared file system" hoặc "Active Directory" → nghĩ đến **FSx for Windows**.
