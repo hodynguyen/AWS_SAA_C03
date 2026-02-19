@@ -86,6 +86,28 @@ MFA Delete adds an extra layer of protection by requiring **Multi-Factor Authent
 *   If you see a question about preventing accidental deletion of S3 objects → think **Versioning + MFA Delete**.
 *   Remember: **root account only**, **CLI/API only** (not Console).
 
+## 4. S3 Access Logs
+
+S3 Access Logs allow you to record and monitor **all requests** made to an S3 bucket for auditing and analysis purposes.
+
+### How It Works
+*   Any request made to S3 (authorized or denied) will be **logged** into another S3 bucket (called the **Logging Bucket** or **Target Bucket**).
+*   Log format includes: requester, bucket name, request time, request action, response status, error codes, etc.
+*   Logs can be analyzed using tools like **Amazon Athena**, **S3 Select**, or third-party tools.
+
+### Configuration
+*   You must specify a **Target Bucket** (Logging Bucket) in the **same AWS Region** as the source bucket.
+*   The target bucket must have proper **ACL permissions** (grant `s3:PutObject` to the S3 Log Delivery group).
+
+### ⚠️ Warning: Logging Loop
+*   **NEVER set the Logging Bucket to be the same as the Monitored Bucket!**
+*   This creates an infinite **logging loop**: every log write generates a new log entry → exponential growth in size → massive costs.
+
+### Exam Tips
+*   S3 Access Logs = **auditing who accessed what in your S3 bucket**.
+*   Logging bucket must be in the **same region**.
+*   Remember the **logging loop** warning — it's a classic exam trap.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -175,3 +197,25 @@ MFA Delete thêm một lớp bảo vệ bằng cách yêu cầu **Xác thực đ
 *   MFA Delete = **bảo vệ thêm chống xóa vĩnh viễn nhầm**.
 *   Nếu thấy câu hỏi về ngăn chặn xóa nhầm S3 objects → nghĩ đến **Versioning + MFA Delete**.
 *   Ghi nhớ: **chỉ tài khoản root**, **chỉ CLI/API** (không dùng Console được).
+
+## 4. S3 Access Logs (Nhật ký truy cập S3)
+
+S3 Access Logs cho phép bạn ghi lại và giám sát **tất cả các request** đến một S3 bucket để phục vụ kiểm toán và phân tích.
+
+### Cách hoạt động
+*   Mọi request đến S3 (dù được cho phép hay bị từ chối) đều được **ghi log** vào một S3 bucket khác (gọi là **Logging Bucket** hay **Target Bucket**).
+*   Log bao gồm: người gửi request, tên bucket, thời gian, hành động, trạng thái phản hồi, mã lỗi, v.v.
+*   Log có thể được phân tích bằng **Amazon Athena**, **S3 Select**, hoặc các công cụ bên thứ ba.
+
+### Cấu hình
+*   Phải chỉ định một **Target Bucket** (Logging Bucket) trong **cùng AWS Region** với bucket nguồn.
+*   Target bucket phải có **quyền ACL** phù hợp (cấp `s3:PutObject` cho nhóm S3 Log Delivery).
+
+### ⚠️ Cảnh báo: Vòng lặp Log
+*   **TUYỆT ĐỐI KHÔNG đặt Logging Bucket trùng với Bucket đang giám sát!**
+*   Điều này tạo ra **vòng lặp log vô hạn**: mỗi lần ghi log lại sinh ra log mới → tăng trưởng mũ → chi phí khổng lồ.
+
+### Exam Tips
+*   S3 Access Logs = **kiểm toán ai đã truy cập gì trong S3 bucket**.
+*   Logging bucket phải cùng **region**.
+*   Nhớ cảnh báo **vòng lặp log** — đây là bẫy kinh điển trong đề thi.
