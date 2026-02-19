@@ -73,6 +73,45 @@ CloudFront can use **EC2 instances** or **Application Load Balancers (ALB)** as 
 *   ALB as origin → ALB must be **public**, EC2 behind it can be **private**.
 *   ALB approach is **more secure** — EC2 instances don't need public IPs.
 
+## 3. CloudFront - Geo Restriction
+
+Geo Restriction (Geographic Restrictions) allows you to **control which countries** can access your CloudFront distribution.
+
+### How It Works
+*   **Allowlist**: Only users from **approved countries** can access your content.
+*   **Blocklist**: Users from **specific countries are blocked** from accessing your content.
+*   Country is determined using a **3rd-party Geo-IP database** that maps user IP addresses to countries.
+
+### Use Cases
+*   **Copyright compliance**: Restrict content distribution to countries where you have distribution rights (e.g., movies, music).
+*   **Legal regulations**: Block access from countries under sanctions or legal restrictions.
+*   **Content licensing**: Different content availability per region.
+
+### Exam Tips
+*   Geo Restriction = **country-level allow/block** on CloudFront.
+*   Uses **Geo-IP database** to determine user's country.
+*   If you see "restrict content by country" → think **CloudFront Geo Restriction**.
+
+## 4. CloudFront - Cache Invalidation
+
+By default, CloudFront caches content based on TTL. Cache Invalidation lets you **force-remove cached content** from Edge Locations before the TTL expires.
+
+### How It Works
+*   When you update content at the origin (e.g., new version of a file), edge caches still serve the **old version** until TTL expires.
+*   You can create an **Invalidation** to force CloudFront to remove cached objects.
+*   After invalidation, the next request will fetch the **latest version** from the origin.
+
+### Invalidation Paths
+*   You specify **path patterns** to invalidate:
+    *   `/*` — invalidate **all files** (entire distribution cache).
+    *   `/images/*` — invalidate all files under the `/images/` path.
+    *   `/index.html` — invalidate a **specific file**.
+
+### Exam Tips
+*   Cache Invalidation = **force-refresh cached content** at edge locations.
+*   Use when you need users to see **updated content immediately** without waiting for TTL.
+*   Invalidating `/*` clears the **entire cache** — use with caution (can increase origin load temporarily).
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -149,3 +188,42 @@ CloudFront có thể dùng **EC2 instances** hoặc **Application Load Balancers
 *   EC2 làm origin → EC2 phải **public**, SG allow IP Edge Locations.
 *   ALB làm origin → ALB phải **public**, EC2 phía sau có thể **private**.
 *   Dùng ALB **bảo mật hơn** — EC2 không cần public IP.
+
+## 3. CloudFront - Geo Restriction (Giới hạn địa lý)
+
+Geo Restriction cho phép bạn **kiểm soát quốc gia nào** có thể truy cập CloudFront distribution.
+
+### Cách hoạt động
+*   **Allowlist**: Chỉ người dùng từ **các quốc gia được phê duyệt** mới truy cập được.
+*   **Blocklist**: Người dùng từ **các quốc gia cụ thể bị chặn** truy cập.
+*   Quốc gia được xác định bằng **cơ sở dữ liệu Geo-IP** (bên thứ 3) ánh xạ IP người dùng sang quốc gia.
+
+### Use Cases
+*   **Tuân thủ bản quyền**: Giới hạn phân phối nội dung chỉ ở các quốc gia có quyền phân phối (ví dụ: phim, nhạc).
+*   **Quy định pháp lý**: Chặn truy cập từ các quốc gia bị cấm vận hoặc hạn chế pháp lý.
+*   **Cấp phép nội dung**: Nội dung khả dụng khác nhau theo từng khu vực.
+
+### Exam Tips
+*   Geo Restriction = **cho phép/chặn theo quốc gia** trên CloudFront.
+*   Dùng **cơ sở dữ liệu Geo-IP** để xác định quốc gia người dùng.
+*   Nếu thấy "giới hạn nội dung theo quốc gia" → nghĩ đến **CloudFront Geo Restriction**.
+
+## 4. CloudFront - Cache Invalidation (Xóa cache)
+
+Mặc định, CloudFront cache nội dung theo TTL. Cache Invalidation cho phép bạn **xóa nội dung cache** khỏi Edge Locations trước khi TTL hết hạn.
+
+### Cách hoạt động
+*   Khi bạn cập nhật nội dung tại origin (ví dụ: phiên bản mới của file), edge cache vẫn phục vụ **phiên bản cũ** cho đến khi TTL hết hạn.
+*   Bạn có thể tạo một **Invalidation** để ép CloudFront xóa các object đã cache.
+*   Sau invalidation, request tiếp theo sẽ lấy **phiên bản mới nhất** từ origin.
+
+### Đường dẫn Invalidation
+*   Bạn chỉ định **path patterns** để invalidate:
+    *   `/*` — invalidate **tất cả file** (toàn bộ cache của distribution).
+    *   `/images/*` — invalidate tất cả file trong đường dẫn `/images/`.
+    *   `/index.html` — invalidate một **file cụ thể**.
+
+### Exam Tips
+*   Cache Invalidation = **ép refresh nội dung cache** tại edge locations.
+*   Dùng khi cần người dùng thấy **nội dung mới ngay lập tức** mà không chờ TTL.
+*   Invalidate `/*` xóa **toàn bộ cache** — dùng cẩn thận (có thể tăng tải origin tạm thời).
