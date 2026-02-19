@@ -179,32 +179,63 @@ S3 Access Points simplify managing access to shared S3 buckets by creating **ded
 ### Problem It Solves
 *   When many users/applications/teams share a single S3 bucket, the **Bucket Policy becomes extremely complex** (hundreds of lines).
 *   Hard to manage, error-prone, and difficult to audit.
+*   Each team needs access to different prefixes with different permission levels.
 
 ### How It Works
 *   Each Access Point has:
     *   Its own **DNS name** (Internet or VPC origin).
     *   Its own **Access Point Policy** (similar to Bucket Policy but scoped to the access point).
+    *   Can be **restricted to a specific prefix** in the bucket.
 *   You can create **separate Access Points** for different use cases:
     *   Example: `finance-ap` → grants R/W to `/finance/` prefix only.
     *   Example: `analytics-ap` → grants Read-only to `/analytics/` prefix only.
+    *   Example: `hr-ap` → grants R/W to `/hr/` prefix, restricted to VPC only.
 *   Each Access Point policy is **simple and focused**, replacing one massive bucket policy.
+*   The **Bucket Policy** must allow access from the Access Point (delegate permissions).
 
 ### Access Point Types
 *   **Internet Origin**: Accessible from the internet.
-*   **VPC Origin**: Accessible **only from within a specific VPC**. You must create a **VPC Endpoint (Gateway or Interface)** to access it. Adds extra layer of network security.
-
-### S3 Object Lambda Access Point
-*   Allows you to **transform data on-the-fly** using an **AWS Lambda function** before returning the object to the caller.
-*   Use Cases:
-    *   Redacting PII (personally identifiable information) before returning data.
-    *   Converting data formats (e.g., XML → JSON).
-    *   Resizing/watermarking images on download.
-*   How: Caller → **S3 Object Lambda Access Point** → Lambda function → **Supporting Access Point** → S3 Bucket.
+*   **VPC Origin**: Accessible **only from within a specific VPC**.
+    *   Must create a **VPC Endpoint (Gateway or Interface)** to access it.
+    *   The VPC Endpoint Policy must allow access to the target bucket and Access Point.
+    *   Adds an extra layer of **network-level security**.
 
 ### Exam Tips
 *   S3 Access Points = **simplify complex bucket policies** by creating focused, per-use-case endpoints.
-*   **VPC Origin** Access Point = restrict access to a specific VPC only.
-*   **S3 Object Lambda** = transform objects on the fly before delivery (redact, convert, resize).
+*   Each Access Point has its own **DNS name**, **policy**, and can be scoped to a **prefix**.
+*   **VPC Origin** Access Point = restrict access to a specific VPC only (need VPC Endpoint).
+*   Great for **large organizations** with many teams sharing one bucket.
+
+## 8. S3 Object Lambda
+
+S3 Object Lambda allows you to **transform data on-the-fly** using **AWS Lambda functions** before the object is returned to the calling application. No need to create copies of your data.
+
+### How It Works
+1.  Application sends a **GetObject** request to the **S3 Object Lambda Access Point**.
+2.  The S3 Object Lambda Access Point invokes a **Lambda function**.
+3.  The Lambda function retrieves the **original object** from S3 via a **Supporting Access Point** (a regular S3 Access Point).
+4.  The Lambda function **transforms** the data.
+5.  The **transformed object** is returned to the application.
+
+### Use Cases
+*   **Redacting PII**: Remove sensitive data (SSN, emails, names) before returning to analytics apps.
+*   **Converting formats**: Transform XML → JSON, CSV → Parquet, etc.
+*   **Resizing images**: Dynamically resize or watermark images on download based on the caller.
+*   **Enriching data**: Add metadata or merge data from other sources before delivery.
+*   **Different views for different users**: Same object, different transformations depending on who requests it.
+
+### Key Architecture
+*   Requires **3 components**:
+    1.  **S3 Bucket** — stores the original objects.
+    2.  **S3 Access Point (Supporting)** — regular access point linked to the bucket.
+    3.  **S3 Object Lambda Access Point** — triggers the Lambda function on GetObject.
+*   You can have **multiple Object Lambda Access Points** on the same bucket for different transformations.
+
+### Exam Tips
+*   S3 Object Lambda = **transform objects on the fly** without storing multiple copies.
+*   Key architecture: `Application → Object Lambda AP → Lambda → Supporting AP → S3 Bucket`.
+*   Use when you need **different views of the same data** for different consumers.
+*   No need to maintain **separate, transformed copies** of objects — saves storage cost.
 
 ---
 
@@ -389,29 +420,60 @@ S3 Access Points đơn giản hóa việc quản lý truy cập vào S3 bucket d
 ### Vấn đề nó giải quyết
 *   Khi nhiều user/ứng dụng/team cùng dùng chung một S3 bucket, **Bucket Policy trở nên cực kỳ phức tạp** (hàng trăm dòng).
 *   Khó quản lý, dễ sai sót, và khó kiểm toán.
+*   Mỗi team cần truy cập prefix khác nhau với mức quyền khác nhau.
 
 ### Cách hoạt động
 *   Mỗi Access Point có:
     *   **DNS name** riêng (Internet hoặc VPC origin).
     *   **Access Point Policy** riêng (giống Bucket Policy nhưng chỉ áp dụng cho access point đó).
+    *   Có thể **giới hạn theo prefix** cụ thể trong bucket.
 *   Bạn có thể tạo **các Access Point riêng biệt** cho các use case khác nhau:
     *   Ví dụ: `finance-ap` → cấp quyền R/W chỉ cho prefix `/finance/`.
     *   Ví dụ: `analytics-ap` → cấp quyền Read-only chỉ cho prefix `/analytics/`.
+    *   Ví dụ: `hr-ap` → cấp quyền R/W cho prefix `/hr/`, giới hạn trong VPC.
 *   Mỗi access point policy **đơn giản và tập trung**, thay thế một bucket policy khổng lồ.
+*   **Bucket Policy** phải cho phép truy cập từ Access Point (ủy quyền).
 
 ### Các loại Access Point
 *   **Internet Origin**: Truy cập từ internet.
-*   **VPC Origin**: Chỉ truy cập **từ trong một VPC cụ thể**. Cần tạo **VPC Endpoint (Gateway hoặc Interface)** để truy cập. Thêm lớp bảo mật mạng.
-
-### S3 Object Lambda Access Point
-*   Cho phép **biến đổi dữ liệu ngay lập tức** bằng **AWS Lambda function** trước khi trả object cho người gọi.
-*   Use Cases:
-    *   Ẩn thông tin nhạy cảm PII trước khi trả dữ liệu.
-    *   Chuyển đổi định dạng (ví dụ: XML → JSON).
-    *   Resize/watermark ảnh khi download.
-*   Luồng: Caller → **S3 Object Lambda Access Point** → Lambda function → **Supporting Access Point** → S3 Bucket.
+*   **VPC Origin**: Chỉ truy cập **từ trong một VPC cụ thể**.
+    *   Cần tạo **VPC Endpoint (Gateway hoặc Interface)** để truy cập.
+    *   VPC Endpoint Policy phải cho phép truy cập đến bucket và Access Point.
+    *   Thêm lớp bảo mật **cấp mạng**.
 
 ### Exam Tips
 *   S3 Access Points = **đơn giản hóa bucket policy phức tạp** bằng cách tạo endpoint riêng cho từng use case.
-*   **VPC Origin** Access Point = giới hạn truy cập chỉ trong một VPC.
-*   **S3 Object Lambda** = biến đổi object ngay lập tức trước khi trả về (ẩn PII, chuyển đổi, resize).
+*   Mỗi Access Point có **DNS name**, **policy** riêng, có thể giới hạn theo **prefix**.
+*   **VPC Origin** Access Point = giới hạn truy cập chỉ trong VPC (cần VPC Endpoint).
+*   Phù hợp cho **tổ chức lớn** có nhiều team dùng chung bucket.
+
+## 8. S3 Object Lambda
+
+S3 Object Lambda cho phép bạn **biến đổi dữ liệu ngay lập tức** bằng **AWS Lambda function** trước khi trả object cho ứng dụng. Không cần tạo bản sao dữ liệu.
+
+### Cách hoạt động
+1.  Ứng dụng gửi request **GetObject** đến **S3 Object Lambda Access Point**.
+2.  S3 Object Lambda Access Point gọi **Lambda function**.
+3.  Lambda function lấy **object gốc** từ S3 qua **Supporting Access Point** (một Access Point thường).
+4.  Lambda function **biến đổi** dữ liệu.
+5.  **Object đã biến đổi** được trả về cho ứng dụng.
+
+### Use Cases
+*   **Ẩn PII**: Xóa thông tin nhạy cảm (SSN, email, tên) trước khi trả cho ứng dụng phân tích.
+*   **Chuyển đổi format**: XML → JSON, CSV → Parquet, v.v.
+*   **Resize ảnh**: Tự động resize hoặc watermark ảnh khi download tùy theo người gọi.
+*   **Bổ sung dữ liệu**: Thêm metadata hoặc merge dữ liệu từ nguồn khác trước khi trả.
+*   **View khác nhau cho user khác nhau**: Cùng object, biến đổi khác nhau tùy người request.
+
+### Kiến trúc chính
+*   Cần **3 thành phần**:
+    1.  **S3 Bucket** — lưu object gốc.
+    2.  **S3 Access Point (Supporting)** — access point thường liên kết với bucket.
+    3.  **S3 Object Lambda Access Point** — trigger Lambda function khi GetObject.
+*   Có thể tạo **nhiều Object Lambda Access Points** trên cùng bucket cho các biến đổi khác nhau.
+
+### Exam Tips
+*   S3 Object Lambda = **biến đổi object ngay lập tức** mà không cần lưu nhiều bản sao.
+*   Kiến trúc: `Application → Object Lambda AP → Lambda → Supporting AP → S3 Bucket`.
+*   Dùng khi cần **view khác nhau cho cùng dữ liệu** cho các consumer khác nhau.
+*   Không cần giữ **bản sao đã biến đổi riêng biệt** — tiết kiệm chi phí lưu trữ.
