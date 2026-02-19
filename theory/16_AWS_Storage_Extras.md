@@ -185,6 +185,86 @@ AWS Storage Gateway is a **hybrid cloud storage service** that provides on-premi
 *   If you see "on-premises to S3 with NFS" → **S3 File Gateway**.
 *   If you see "backup tapes to cloud" → **Tape Gateway**.
 
+## 4. AWS Transfer Family
+
+AWS Transfer Family provides fully managed **file transfers in/out of S3 or EFS** using standard file transfer protocols.
+
+### Supported Protocols
+*   **FTP** (File Transfer Protocol) — unencrypted.
+*   **FTPS** (FTP over SSL) — encrypted.
+*   **SFTP** (Secure File Transfer Protocol) — encrypted.
+
+### How It Works
+*   Fully managed infrastructure, scalable, reliable, highly available (multi-AZ).
+*   Pay per provisioned endpoint per hour + data transfer fees.
+*   Store and manage user credentials within the service.
+*   Integrates with existing authentication systems (AD, LDAP, Okta, Amazon Cognito, custom).
+
+### Use Cases
+*   Sharing files with **third parties** or **partners** using standard FTP protocols.
+*   **Compliance** requirements that mandate FTP/SFTP.
+*   Existing workflows that use FTP and you want to **move to cloud** without changing the protocol.
+
+### Exam Tips
+*   AWS Transfer Family = **managed FTP/FTPS/SFTP** to S3 or EFS.
+*   If you see "FTP transfer to S3" → **AWS Transfer Family**.
+
+## 5. AWS DataSync
+
+AWS DataSync is used to **move large amounts of data** from on-premises to AWS, or between AWS storage services. It is an **online data transfer** service.
+
+### How It Works
+*   Install a **DataSync Agent** on your on-premises server.
+*   Agent connects to your source storage (NFS, SMB, HDFS, or other self-managed object storage).
+*   Data is transferred over the network to AWS destinations.
+*   Synchronization can be **scheduled** (hourly, daily, weekly).
+*   File permissions and metadata are **preserved** (NFS POSIX, SMB).
+
+### Destinations
+*   **Amazon S3** (any storage class including Glacier).
+*   **Amazon EFS**.
+*   **Amazon FSx** (all types).
+
+### Key Features
+*   **Speed**: Up to **10 Gbps**, can use bandwidth throttling.
+*   **Incremental**: After first full copy, only transfers **changed data**.
+*   **AWS to AWS**: Can also sync between AWS storage services (e.g., EFS to EFS in different regions).
+*   **AWS Snowcone**: Has DataSync agent pre-installed — can ship data + sync over network.
+
+### DataSync vs Storage Gateway
+
+| Feature | DataSync | Storage Gateway |
+|---|---|---|
+| **Purpose** | **Migrate/sync** data (one-time or scheduled) | **Ongoing hybrid access** to cloud storage |
+| **Direction** | On-prem → AWS, or AWS → AWS | On-prem ↔ AWS (bidirectional access) |
+| **Agent** | DataSync Agent | Storage Gateway VM/Hardware |
+| **Use Case** | Migration, replication, sync | Daily hybrid cloud access |
+
+### Exam Tips
+*   DataSync = **move/sync large data** on-prem to AWS or AWS to AWS.
+*   **Agent-based** (install on-prem).
+*   Preserves **file permissions and metadata**.
+*   Supports **S3, EFS, FSx** as destinations.
+*   If you see "migrate NFS server to AWS" or "sync data to S3" → **DataSync**.
+
+## 6. All AWS Storage Options Compared
+
+| Service | Type | Protocol | Use Case |
+|---|---|---|---|
+| **S3** | Object | HTTP/HTTPS | General object storage, static hosting, data lake |
+| **S3 Glacier** | Archive | HTTP/HTTPS | Long-term archival, compliance |
+| **EBS** | Block | Attached to EC2 | OS volumes, databases, high IOPS |
+| **Instance Store** | Block | Local to EC2 | Temp storage, cache, high I/O (ephemeral) |
+| **EFS** | File (NFS) | NFS | Shared Linux file system, multi-AZ |
+| **FSx for Windows** | File (SMB) | SMB | Windows workloads, Active Directory |
+| **FSx for Lustre** | File (Lustre) | Lustre | HPC, ML, S3 integration |
+| **FSx for ONTAP** | File (Multi) | NFS/SMB/iSCSI | NAS migration, multi-protocol |
+| **FSx for OpenZFS** | File (NFS) | NFS | ZFS migration, cloning |
+| **Storage Gateway** | Hybrid | NFS/SMB/iSCSI | On-prem ↔ AWS bridge |
+| **Transfer Family** | Transfer | FTP/SFTP/FTPS | FTP-based file transfer to S3/EFS |
+| **DataSync** | Migration | Agent-based | Data migration & sync |
+| **Snow Family** | Offline | Physical | Large offline data migration, edge compute |
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -373,3 +453,82 @@ AWS Storage Gateway là dịch vụ **lưu trữ hybrid cloud** cung cấp truy 
 *   **Tape Gateway**: Băng từ ảo → S3/Glacier (thay thế băng vật lý).
 *   Thấy "on-premises to S3 with NFS" → **S3 File Gateway**.
 *   Thấy "backup tapes to cloud" → **Tape Gateway**.
+
+## 4. AWS Transfer Family
+
+AWS Transfer Family cung cấp dịch vụ **truyền file vào/ra S3 hoặc EFS** được quản lý hoàn toàn, dùng các giao thức truyền file chuẩn.
+
+### Giao thức hỗ trợ
+*   **FTP** (File Transfer Protocol) — không mã hóa.
+*   **FTPS** (FTP over SSL) — có mã hóa.
+*   **SFTP** (Secure File Transfer Protocol) — có mã hóa.
+
+### Cách hoạt động
+*   Hạ tầng được quản lý hoàn toàn, co giãn, tin cậy, sẵn sàng cao (multi-AZ).
+*   Tính phí theo endpoint/giờ + phí truyền dữ liệu.
+*   Tích hợp với hệ thống xác thực có sẵn (AD, LDAP, Okta, Cognito, custom).
+
+### Use Cases
+*   Chia sẻ file với **đối tác bên thứ 3** dùng giao thức FTP chuẩn.
+*   Yêu cầu **compliance** bắt buộc FTP/SFTP.
+*   Workflow sẵn có dùng FTP và muốn **chuyển lên cloud** không đổi giao thức.
+
+### Exam Tips
+*   AWS Transfer Family = **FTP/FTPS/SFTP được quản lý** đến S3 hoặc EFS.
+*   Thấy "FTP transfer to S3" → **AWS Transfer Family**.
+
+## 5. AWS DataSync
+
+AWS DataSync dùng để **di chuyển lượng lớn dữ liệu** từ on-premises lên AWS, hoặc giữa các dịch vụ lưu trữ AWS. Là dịch vụ **truyền dữ liệu online**.
+
+### Cách hoạt động
+*   Cài **DataSync Agent** trên server on-premises.
+*   Agent kết nối với nguồn lưu trữ (NFS, SMB, HDFS, hoặc object storage tự quản lý).
+*   Dữ liệu được truyền qua mạng đến đích AWS.
+*   Đồng bộ có thể **lên lịch** (hàng giờ, ngày, tuần).
+*   **Bảo tồn** quyền file và metadata (NFS POSIX, SMB).
+
+### Đích
+*   **Amazon S3** (mọi storage class kể cả Glacier).
+*   **Amazon EFS**.
+*   **Amazon FSx** (tất cả loại).
+
+### Tính năng chính
+*   **Tốc độ**: Lên tới **10 Gbps**, có thể giới hạn băng thông.
+*   **Tăng dần**: Sau lần copy đầu tiên, chỉ truyền **dữ liệu thay đổi**.
+*   **AWS → AWS**: Có thể sync giữa các dịch vụ AWS (ví dụ: EFS → EFS khác region).
+*   **Snowcone**: Có sẵn DataSync agent — vừa ship dữ liệu vừa sync qua mạng.
+
+### DataSync vs Storage Gateway
+
+| Đặc điểm | DataSync | Storage Gateway |
+|---|---|---|
+| **Mục đích** | **Di chuyển/sync** dữ liệu (một lần hoặc định kỳ) | **Truy cập hybrid** liên tục vào cloud |
+| **Hướng** | On-prem → AWS, hoặc AWS → AWS | On-prem ↔ AWS (hai chiều) |
+| **Agent** | DataSync Agent | Storage Gateway VM/Hardware |
+| **Use Case** | Migration, replication, sync | Truy cập hybrid hàng ngày |
+
+### Exam Tips
+*   DataSync = **di chuyển/sync dữ liệu lớn** on-prem → AWS hoặc AWS → AWS.
+*   Dùng **Agent** (cài on-prem).
+*   Bảo tồn **quyền file và metadata**.
+*   Hỗ trợ đích **S3, EFS, FSx**.
+*   Thấy "migrate NFS server" hoặc "sync data to S3" → **DataSync**.
+
+## 6. Tổng hợp tất cả AWS Storage Options
+
+| Dịch vụ | Loại | Giao thức | Use Case |
+|---|---|---|---|
+| **S3** | Object | HTTP/HTTPS | Lưu trữ object, web tĩnh, data lake |
+| **S3 Glacier** | Archive | HTTP/HTTPS | Lưu trữ dài hạn, compliance |
+| **EBS** | Block | Gắn vào EC2 | OS volumes, databases, IOPS cao |
+| **Instance Store** | Block | Local EC2 | Lưu trữ tạm, cache, I/O cao (mất khi stop) |
+| **EFS** | File (NFS) | NFS | File system Linux chia sẻ, multi-AZ |
+| **FSx Windows** | File (SMB) | SMB | Windows workloads, AD |
+| **FSx Lustre** | File (Lustre) | Lustre | HPC, ML, tích hợp S3 |
+| **FSx ONTAP** | File (Đa) | NFS/SMB/iSCSI | NAS migration, đa giao thức |
+| **FSx OpenZFS** | File (NFS) | NFS | ZFS migration, cloning |
+| **Storage Gateway** | Hybrid | NFS/SMB/iSCSI | Cầu nối on-prem ↔ AWS |
+| **Transfer Family** | Transfer | FTP/SFTP/FTPS | Truyền file FTP đến S3/EFS |
+| **DataSync** | Migration | Agent-based | Di chuyển & sync dữ liệu |
+| **Snow Family** | Offline | Vật lý | Di chuyển offline lớn, edge compute |
