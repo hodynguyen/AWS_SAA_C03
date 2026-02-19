@@ -133,6 +133,58 @@ Amazon FSx provides **fully managed, high-performance third-party file systems**
 *   If you see "HPC" or "Machine Learning file system" → think **FSx for Lustre**.
 *   If you see "Windows shared file system" or "Active Directory" → think **FSx for Windows**.
 
+## 3. Storage Gateway Overview
+
+AWS Storage Gateway is a **hybrid cloud storage service** that provides on-premises access to **virtually unlimited cloud storage**. It bridges your on-premises infrastructure with AWS cloud storage.
+
+### Why Storage Gateway?
+*   Companies want a **hybrid cloud** approach: some data on-premises, some in AWS.
+*   Reasons: long cloud migrations, security requirements, compliance, IT strategy.
+*   S3 is proprietary (not NFS/SMB), so you can't just mount it like a local drive → **Storage Gateway bridges this gap**.
+
+### Gateway Types
+
+#### A. S3 File Gateway
+*   Configured S3 buckets accessible using **NFS** or **SMB** protocol.
+*   Most recently used data is **cached locally** on the gateway for low-latency access.
+*   Supports S3 Standard, S3 Standard-IA, S3 One Zone-IA, S3 Intelligent-Tiering.
+*   Transition to **S3 Glacier** using Lifecycle Policies.
+*   Access controlled by **IAM roles** for each File Gateway.
+*   **SMB**: Integrated with **Active Directory** for user authentication.
+
+#### B. FSx File Gateway
+*   Provides access to **Amazon FSx for Windows File Server** from on-premises.
+*   Local cache for **frequently accessed data**.
+*   **Windows native** compatibility (SMB, NTFS, AD).
+*   Use Case: Group file shares and home directories that need both on-prem and cloud access.
+
+#### C. Volume Gateway
+*   Block storage using **iSCSI** protocol, backed by S3.
+*   Two types:
+    *   **Cached Volumes**: Primary data in S3, frequently accessed data cached locally. Low-latency access to frequently used data.
+    *   **Stored Volumes**: Entire dataset on-premises, scheduled backups (EBS Snapshots) to S3. Low-latency access to entire dataset.
+*   Can create **EBS Snapshots** from volumes and restore as EBS volumes.
+
+#### D. Tape Gateway
+*   For companies using **physical tape backup** processes.
+*   Virtual Tape Library (VTL) backed by **S3** and **Glacier**.
+*   Back up data using existing **tape-based** backup software (Veeam, NetBackup, etc.).
+*   Use Case: Replace physical tapes with cloud-backed virtual tapes.
+
+### Hardware Appliance
+*   If you don't have on-premises virtualization, AWS sells a **physical hardware appliance** you can install in your data center.
+*   Works with all gateway types (File, Volume, Tape).
+*   Helpful for **small data centers** with no virtual machine infrastructure.
+
+### Exam Tips
+*   Storage Gateway = **hybrid cloud storage** bridge between on-prem and AWS.
+*   **S3 File Gateway**: NFS/SMB → S3 (with local cache).
+*   **FSx File Gateway**: On-prem access to FSx for Windows.
+*   **Volume Gateway**: iSCSI block storage → S3 (Cached or Stored). EBS Snapshots.
+*   **Tape Gateway**: Virtual tapes → S3/Glacier (replace physical tapes).
+*   If you see "on-premises to S3 with NFS" → **S3 File Gateway**.
+*   If you see "backup tapes to cloud" → **Tape Gateway**.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -269,3 +321,55 @@ Amazon FSx cung cấp **hệ thống file bên thứ 3 hiệu suất cao, đư�
 *   **OpenZFS**: NFS, ZFS migration, point-in-time cloning.
 *   Thấy "HPC" hoặc "Machine Learning file system" → nghĩ đến **FSx for Lustre**.
 *   Thấy "Windows shared file system" hoặc "Active Directory" → nghĩ đến **FSx for Windows**.
+
+## 3. Storage Gateway Overview (Tổng quan Storage Gateway)
+
+AWS Storage Gateway là dịch vụ **lưu trữ hybrid cloud** cung cấp truy cập từ on-premises vào **lưu trữ cloud gần như không giới hạn**. Nó kết nối hạ tầng on-premises với AWS cloud storage.
+
+### Tại sao cần Storage Gateway?
+*   Công ty muốn **hybrid cloud**: một phần dữ liệu on-premises, một phần trên AWS.
+*   Lý do: di chuyển cloud dài hạn, yêu cầu bảo mật, compliance, chiến lược IT.
+*   S3 là proprietary (không phải NFS/SMB), không thể mount như ổ đĩa cục bộ → **Storage Gateway là cầu nối**.
+
+### Các loại Gateway
+
+#### A. S3 File Gateway
+*   S3 buckets truy cập qua giao thức **NFS** hoặc **SMB**.
+*   Dữ liệu hay dùng gần đây được **cache cục bộ** trên gateway.
+*   Hỗ trợ S3 Standard, S3 Standard-IA, S3 One Zone-IA, S3 Intelligent-Tiering.
+*   Chuyển sang **S3 Glacier** bằng Lifecycle Policies.
+*   Quyền truy cập qua **IAM roles** cho mỗi File Gateway.
+*   **SMB**: Tích hợp với **Active Directory** để xác thực.
+
+#### B. FSx File Gateway
+*   Cung cấp truy cập **Amazon FSx for Windows File Server** từ on-premises.
+*   Cache cục bộ cho **dữ liệu hay truy cập**.
+*   Tương thích **Windows native** (SMB, NTFS, AD).
+*   Use Case: Chia sẻ file và thư mục home cần truy cập cả on-prem và cloud.
+
+#### C. Volume Gateway
+*   Lưu trữ block dùng giao thức **iSCSI**, backed bởi S3.
+*   Hai loại:
+    *   **Cached Volumes**: Dữ liệu chính trên S3, dữ liệu hay dùng cache cục bộ.
+    *   **Stored Volumes**: Toàn bộ dữ liệu on-premises, backup định kỳ (EBS Snapshots) lên S3.
+*   Có thể tạo **EBS Snapshots** từ volumes và restore thành EBS volumes.
+
+#### D. Tape Gateway
+*   Dành cho công ty dùng **backup băng từ vật lý**.
+*   Virtual Tape Library (VTL) backed bởi **S3** và **Glacier**.
+*   Backup bằng phần mềm **tape-based** sẵn có (Veeam, NetBackup, v.v.).
+*   Use Case: Thay thế băng từ vật lý bằng băng từ ảo trên cloud.
+
+### Hardware Appliance
+*   Nếu không có hạ tầng ảo hóa, AWS bán **thiết bị phần cứng vật lý** cài đặt trong data center của bạn.
+*   Tương thích với tất cả gateway types (File, Volume, Tape).
+*   Phù hợp cho **data center nhỏ** không có hạ tầng máy ảo.
+
+### Exam Tips
+*   Storage Gateway = **hybrid cloud storage** kết nối on-prem và AWS.
+*   **S3 File Gateway**: NFS/SMB → S3 (có local cache).
+*   **FSx File Gateway**: Truy cập FSx for Windows từ on-prem.
+*   **Volume Gateway**: iSCSI block storage → S3 (Cached hoặc Stored). EBS Snapshots.
+*   **Tape Gateway**: Băng từ ảo → S3/Glacier (thay thế băng vật lý).
+*   Thấy "on-premises to S3 with NFS" → **S3 File Gateway**.
+*   Thấy "backup tapes to cloud" → **Tape Gateway**.
