@@ -112,6 +112,44 @@ By default, CloudFront caches content based on TTL. Cache Invalidation lets you 
 *   Use when you need users to see **updated content immediately** without waiting for TTL.
 *   Invalidating `/*` clears the **entire cache** — use with caution (can increase origin load temporarily).
 
+## 5. AWS Global Accelerator
+
+AWS Global Accelerator improves the **availability and performance** of your applications by routing user traffic through the **AWS Global Network** instead of the public internet.
+
+### The Problem
+*   The public internet is unpredictable: traffic goes through many **hops** (routers) with varying latency, packet loss, and congestion.
+*   A user in Australia accessing a server in US may experience **high latency** and **variable performance**.
+
+### How It Works
+*   Users connect to the **nearest Edge Location** using **2 Anycast static IPs** provided by Global Accelerator.
+*   Traffic then travels over the **AWS private global network** (fast, low-latency, redundant) to reach your application.
+*   **Anycast IP**: A single IP address that routes to the nearest Edge Location automatically. All Edge Locations announce the same IP.
+
+### Key Features
+*   **2 static Anycast IPs** are assigned to your accelerator — these never change.
+*   Works with **Elastic IP, EC2 instances, ALB, NLB** — both public and private.
+*   **Health Checks**: Automatically detects unhealthy endpoints and performs **instant failover** (< 1 minute).
+*   **DDoS Protection**: Integrated with **AWS Shield** for automatic DDoS protection.
+*   No client-side caching issues — since IPs are static and don't change.
+
+### CloudFront vs Global Accelerator
+
+| Feature | CloudFront | Global Accelerator |
+|---|---|---|
+| **Type** | Content Delivery Network (CDN) | Network-level accelerator |
+| **Caching** | **Yes** — caches content at edge | **No caching** — proxies traffic |
+| **Best for** | **HTTP cacheable content** (images, videos, APIs with caching) | **Non-HTTP** (TCP, UDP), gaming, IoT, VoIP; or HTTP requiring **static IPs** or **fast failover** |
+| **IPs** | Uses Edge Location IPs (many, dynamic) | **2 static Anycast IPs** |
+| **Protocol** | HTTP/HTTPS only | TCP and UDP |
+| **Failover** | Origin failover (configured) | **Automatic, instant** (< 1 min) via health checks |
+
+### Exam Tips
+*   Global Accelerator = **AWS private network** + **2 static Anycast IPs** + **instant failover**.
+*   Use when you need **static IPs**, **deterministic fast failover**, or **non-HTTP protocols** (TCP/UDP).
+*   Use **CloudFront** for cacheable HTTP content; use **Global Accelerator** for everything else.
+*   If you see "improve performance for global users" + "static IP" or "TCP/UDP" → think **Global Accelerator**.
+*   Both use **Edge Locations** and the **AWS global network**, but for different purposes.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -227,3 +265,41 @@ Mặc định, CloudFront cache nội dung theo TTL. Cache Invalidation cho phé
 *   Cache Invalidation = **ép refresh nội dung cache** tại edge locations.
 *   Dùng khi cần người dùng thấy **nội dung mới ngay lập tức** mà không chờ TTL.
 *   Invalidate `/*` xóa **toàn bộ cache** — dùng cẩn thận (có thể tăng tải origin tạm thời).
+
+## 5. AWS Global Accelerator
+
+AWS Global Accelerator cải thiện **tính khả dụng và hiệu suất** của ứng dụng bằng cách định tuyến traffic qua **mạng nội bộ toàn cầu của AWS** thay vì internet công cộng.
+
+### Vấn đề
+*   Internet công cộng không ổn định: traffic đi qua nhiều **hops** (routers) với độ trễ, mất gói, và tắc nghẽ khác nhau.
+*   Người dùng ở Úc truy cập server ở Mỹ có thể gặp **độ trễ cao** và **hiệu suất không ổn định**.
+
+### Cách hoạt động
+*   Người dùng kết nối đến **Edge Location gần nhất** sử dụng **2 Anycast static IPs** do Global Accelerator cung cấp.
+*   Traffic sau đó đi qua **mạng nội bộ toàn cầu của AWS** (nhanh, độ trễ thấp, dự phòng) để đến ứng dụng.
+*   **Anycast IP**: Một địa chỉ IP duy nhất tự động định tuyến đến Edge Location gần nhất. Tất cả Edge Locations cùng quảng bá chung một IP.
+
+### Tính năng chính
+*   **2 static Anycast IPs** được gán cho accelerator — không bao giờ thay đổi.
+*   Hỗ trợ **Elastic IP, EC2, ALB, NLB** — cả public và private.
+*   **Health Checks**: Tự động phát hiện endpoint lỗi và **failover tức thì** (< 1 phút).
+*   **Chống DDoS**: Tích hợp với **AWS Shield** tự động bảo vệ.
+*   Không vấn đề cache phía client — vì IPs là tĩnh và không thay đổi.
+
+### CloudFront vs Global Accelerator
+
+| Đặc điểm | CloudFront | Global Accelerator |
+|---|---|---|
+| **Loại** | Content Delivery Network (CDN) | Network-level accelerator |
+| **Cache** | **Có** — cache nội dung tại edge | **Không cache** — proxy traffic |
+| **Tốt cho** | **HTTP cacheable** (ảnh, video, API có cache) | **Non-HTTP** (TCP, UDP), gaming, IoT, VoIP; hoặc HTTP cần **static IPs** hoặc **failover nhanh** |
+| **IPs** | Dùng IP của Edge Locations (nhiều, động) | **2 static Anycast IPs** |
+| **Protocol** | Chỉ HTTP/HTTPS | TCP và UDP |
+| **Failover** | Origin failover (cấu hình) | **Tự động, tức thì** (< 1 phút) qua health checks |
+
+### Exam Tips
+*   Global Accelerator = **mạng nội bộ AWS** + **2 static Anycast IPs** + **failover tức thì**.
+*   Dùng khi cần **static IPs**, **failover nhanh và chính xác**, hoặc **giao thức non-HTTP** (TCP/UDP).
+*   Dùng **CloudFront** cho HTTP cacheable; dùng **Global Accelerator** cho các trường hợp khác.
+*   Nếu thấy "cải thiện hiệu suất cho user toàn cầu" + "static IP" hoặc "TCP/UDP" → nghĩ đến **Global Accelerator**.
+*   Cả hai dùng **Edge Locations** và **mạng toàn cầu AWS**, nhưng cho mục đích khác nhau.
