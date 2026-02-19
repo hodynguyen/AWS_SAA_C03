@@ -167,9 +167,10 @@ AWS Storage Gateway is a **hybrid cloud storage service** that provides on-premi
 
 #### D. Tape Gateway
 *   For companies using **physical tape backup** processes.
+*   Uses **iSCSI** interface — compatible with existing tape-based backup software.
 *   Virtual Tape Library (VTL) backed by **S3** and **Glacier**.
 *   Back up data using existing **tape-based** backup software (Veeam, NetBackup, etc.).
-*   Use Case: Replace physical tapes with cloud-backed virtual tapes.
+*   Use Case: Replace physical tapes with cloud-backed virtual tapes — virtually unlimited storage.
 
 ### Hardware Appliance
 *   If you don't have on-premises virtualization, AWS sells a **physical hardware appliance** you can install in your data center.
@@ -436,9 +437,10 @@ AWS Storage Gateway là dịch vụ **lưu trữ hybrid cloud** cung cấp truy 
 
 #### D. Tape Gateway
 *   Dành cho công ty dùng **backup băng từ vật lý**.
+*   Dùng giao diện **iSCSI** — tương thích với phần mềm backup tape-based sẵn có.
 *   Virtual Tape Library (VTL) backed bởi **S3** và **Glacier**.
 *   Backup bằng phần mềm **tape-based** sẵn có (Veeam, NetBackup, v.v.).
-*   Use Case: Thay thế băng từ vật lý bằng băng từ ảo trên cloud.
+*   Use Case: Thay thế băng từ vật lý bằng băng từ ảo trên cloud — lưu trữ gần như không giới hạn.
 
 ### Hardware Appliance
 *   Nếu không có hạ tầng ảo hóa, AWS bán **thiết bị phần cứng vật lý** cài đặt trong data center của bạn.
