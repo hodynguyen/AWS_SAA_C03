@@ -134,6 +134,44 @@ Pre-signed URLs allow you to give **temporary access** to a specific S3 object w
 *   If the generating user loses access → the pre-signed URL **stops working**.
 *   Great for: download/upload for non-AWS users, temporary sharing, dynamic user lists.
 
+## 6. Glacier Vault Lock & S3 Object Lock
+
+Both features implement the **WORM (Write Once Read Many)** model — once data is written, it **cannot be modified or deleted** for a specified retention period.
+
+### A. S3 Glacier Vault Lock
+*   **Scope**: Applies to an entire **Glacier Vault**.
+*   **Mechanism**: You create a **Vault Lock Policy** and lock it. Once locked, the policy can **never be changed or deleted** (even by root).
+*   **Use Case**: Regulatory compliance (e.g., SEC Rule 17a-4, HIPAA) requiring data to be retained and immutable for a specific period.
+*   **Key Point**: Helpful for **compliance** — once the vault policy is locked, nobody (not even AWS) can alter it.
+
+### B. S3 Object Lock
+*   **Scope**: Applies at the **object level** within an S3 bucket.
+*   **Prerequisite**: **Versioning must be enabled** on the bucket.
+*   **Retention Modes**:
+
+#### 1. Compliance Mode
+*   Object version **cannot be overwritten or deleted** by **any user**, including the **root user**.
+*   Retention mode and period **cannot be changed or shortened**.
+*   Use Case: Strictest protection — regulatory compliance requirements.
+
+#### 2. Governance Mode
+*   Most users cannot overwrite or delete the object.
+*   **Some users with special IAM permissions** (`s3:BypassGovernanceRetention`) can modify retention or delete the object.
+*   Use Case: Less strict — allows authorized users to override when needed (e.g., testing or flexible policies).
+
+#### 3. Legal Hold
+*   Places an **indefinite hold** on an object — no expiration date.
+*   Protects the object regardless of retention period settings.
+*   Can be **freely placed and removed** by users with the `s3:PutObjectLegalHold` IAM permission.
+*   Use Case: Protecting data during legal investigations or audits.
+
+### Exam Tips
+*   **Glacier Vault Lock** = vault-level, immutable policy, compliance-focused.
+*   **S3 Object Lock** = object-level, two modes (Compliance > Governance in strictness).
+*   **Compliance Mode**: Nobody can delete, not even root.
+*   **Governance Mode**: Special IAM users can bypass.
+*   **Legal Hold**: No expiration, independent of retention, toggle on/off with IAM permission.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -271,3 +309,41 @@ Pre-signed URLs cho phép bạn cấp **quyền truy cập tạm thời** vào m
 *   URL kế thừa **quyền IAM của người tạo nó**.
 *   Nếu người tạo mất quyền → pre-signed URL **ngừng hoạt động**.
 *   Phù hợp cho: download/upload cho người dùng không có AWS, chia sẻ tạm thời, danh sách user động.
+
+## 6. Glacier Vault Lock & S3 Object Lock
+
+Cả hai tính năng đều triển khai mô hình **WORM (Write Once Read Many)** — khi dữ liệu đã được ghi, nó **không thể bị sửa đổi hoặc xóa** trong một khoảng thời gian lưu giữ nhất định.
+
+### A. S3 Glacier Vault Lock
+*   **Phạm vi**: Áp dụng cho toàn bộ **Glacier Vault**.
+*   **Cơ chế**: Bạn tạo một **Vault Lock Policy** và khóa nó lại. Khi đã khóa, policy **không bao giờ có thể thay đổi hoặc xóa** (kể cả tài khoản root).
+*   **Use Case**: Tuân thủ quy định (ví dụ: SEC Rule 17a-4, HIPAA) yêu cầu dữ liệu phải được lưu giữ và không bị thay đổi.
+*   **Điểm chính**: Hữu ích cho **compliance** — khi policy đã khóa, không ai (kể cả AWS) có thể thay đổi.
+
+### B. S3 Object Lock
+*   **Phạm vi**: Áp dụng ở **cấp độ object** trong một S3 bucket.
+*   **Điều kiện**: **Phải bật Versioning** trên bucket.
+*   **Các chế độ lưu giữ**:
+
+#### 1. Compliance Mode (Chế độ tuân thủ)
+*   Phiên bản object **không thể bị ghi đè hoặc xóa** bởi **bất kỳ ai**, kể cả **tài khoản root**.
+*   Chế độ và thời gian lưu giữ **không thể thay đổi hoặc rút ngắn**.
+*   Use Case: Bảo vệ nghiêm ngặt nhất — tuân thủ quy định.
+
+#### 2. Governance Mode (Chế độ quản trị)
+*   Hầu hết người dùng không thể ghi đè hoặc xóa object.
+*   **Một số user có quyền IAM đặc biệt** (`s3:BypassGovernanceRetention`) có thể thay đổi thời gian lưu giữ hoặc xóa object.
+*   Use Case: Linh hoạt hơn — cho phép người có thẩm quyền ghi đè khi cần.
+
+#### 3. Legal Hold (Giữ lại vì lý do pháp lý)
+*   Đặt một **lệnh giữ vô thời hạn** trên object — không có ngày hết hạn.
+*   Bảo vệ object bất kể cài đặt retention period.
+*   Có thể được **bật/tắt tự do** bởi user có quyền `s3:PutObjectLegalHold`.
+*   Use Case: Bảo vệ dữ liệu trong quá trình điều tra pháp lý hoặc kiểm toán.
+
+### Exam Tips
+*   **Glacier Vault Lock** = cấp vault, policy bất biến, tập trung vào compliance.
+*   **S3 Object Lock** = cấp object, hai chế độ (Compliance > Governance về mức độ nghiêm ngặt).
+*   **Compliance Mode**: Không ai có thể xóa, kể cả root.
+*   **Governance Mode**: User có quyền IAM đặc biệt có thể bypass.
+*   **Legal Hold**: Không có thời hạn, độc lập với retention, bật/tắt bằng IAM permission.
