@@ -175,6 +175,61 @@ Amazon SNS is a **fully managed Pub/Sub messaging service**. One message is sent
 *   SNS FIFO → only SQS FIFO subscribers.
 *   S3 events can only have **one rule per event type/prefix** → use **Fan Out** to send to multiple destinations.
 
+## 5. Amazon Kinesis
+
+Amazon Kinesis makes it easy to **collect, process, and analyze real-time streaming data** at any scale.
+
+### Kinesis Services
+
+#### A. Kinesis Data Streams
+*   **Capture and store** streaming data for real-time processing.
+*   Made up of **Shards** (each shard = 1MB/s in, 2MB/s out).
+*   **Producers**: Applications, SDK, Kinesis Agent, IoT devices.
+*   **Consumers**: EC2, Lambda, Kinesis Data Firehose, Kinesis Data Analytics.
+*   **Retention**: **1 day** (default) to **365 days**.
+*   Data can be **replayed** (re-processed) — data is not deleted after consumption.
+*   Data is **immutable** — once inserted, cannot be deleted.
+*   **Ordering**: Messages with the same **Partition Key** go to the same shard (ordering per shard).
+*   **Provisioned mode**: Choose number of shards, pay per shard/hour.
+*   **On-demand mode**: Auto-scales, pay per stream/hour + data in/out.
+
+#### B. Kinesis Data Firehose
+*   **Load streaming data** into destinations (fully managed, serverless, auto-scaling).
+*   **Near real-time** (60-second buffer or 1MB buffer).
+*   Destinations:
+    *   **AWS**: S3, Redshift (via S3 COPY), OpenSearch.
+    *   **3rd party**: Splunk, Datadog, New Relic, MongoDB.
+    *   **Custom HTTP endpoint**.
+*   Can **transform data** using Lambda before delivery.
+*   Supports **data format conversion** (e.g., JSON → Parquet).
+*   **No data storage** — no replay capability.
+
+#### C. Kinesis Data Analytics
+*   Analyze streaming data in real-time using **SQL** or **Apache Flink**.
+*   Sources: Kinesis Data Streams, Kinesis Data Firehose.
+*   Fully managed, auto-scaling.
+*   Use Cases: Time-series analytics, real-time dashboards, real-time metrics.
+
+### SQS vs SNS vs Kinesis
+
+| Feature | SQS | SNS | Kinesis Data Streams |
+|---|---|---|---|
+| **Model** | Queue (pull) | Pub/Sub (push) | Stream (pull) |
+| **Consumers** | Pull messages | Push to subscribers | Pull from shards |
+| **Persistence** | Until consumed/expired | No persistence | 1-365 days |
+| **Replay** | No | No | **Yes** |
+| **Ordering** | FIFO only | FIFO only | Per shard (Partition Key) |
+| **Throughput** | Unlimited (Standard) | Depends on subscribers | Per shard (1MB/s in) |
+| **Use Case** | Decouple apps, async processing | Fan out notifications | Real-time streaming, analytics |
+
+### Exam Tips
+*   **Kinesis Data Streams** = real-time data streaming with **retention and replay**.
+*   **Kinesis Data Firehose** = **near real-time delivery** to S3/Redshift/OpenSearch (no replay).
+*   **Kinesis Data Analytics** = SQL/Flink on streaming data.
+*   Data Streams: ordering per shard via **Partition Key**.
+*   If you see "real-time" + "replay" + "streaming" → **Kinesis Data Streams**.
+*   If you see "load streaming data to S3" → **Kinesis Data Firehose**.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -352,3 +407,58 @@ Amazon SNS là dịch vụ **Pub/Sub messaging được quản lý hoàn toàn**
 *   **Message Filtering**: JSON filter policy trên subscriptions.
 *   SNS FIFO → chỉ SQS FIFO subscribers.
 *   S3 events chỉ có **một rule per event type/prefix** → dùng **Fan Out** để gửi nhiều đích.
+
+## 5. Amazon Kinesis
+
+Amazon Kinesis giúp **thu thập, xử lý, và phân tích dữ liệu streaming thời gian thực** ở mọi quy mô.
+
+### Các dịch vụ Kinesis
+
+#### A. Kinesis Data Streams
+*   **Thu thập và lưu trữ** dữ liệu streaming để xử lý real-time.
+*   Gồm các **Shards** (mỗi shard = 1MB/s vào, 2MB/s ra).
+*   **Producers**: Ứng dụng, SDK, Kinesis Agent, thiết bị IoT.
+*   **Consumers**: EC2, Lambda, Kinesis Data Firehose, Kinesis Data Analytics.
+*   **Retention**: **1 ngày** (mặc định) đến **365 ngày**.
+*   Dữ liệu có thể **replay** (xử lý lại) — dữ liệu không bị xóa sau khi consume.
+*   Dữ liệu là **immutable** — khi đã ghi vào, không thể xóa.
+*   **Thứ tự**: Messages có cùng **Partition Key** vào cùng shard (thứ tự theo shard).
+*   **Provisioned mode**: Chọn số shards, trả theo shard/giờ.
+*   **On-demand mode**: Tự động scale, trả theo stream/giờ + data in/out.
+
+#### B. Kinesis Data Firehose
+*   **Tải dữ liệu streaming** vào các đích (fully managed, serverless, tự động scale).
+*   **Gần thời gian thực** (buffer 60 giây hoặc 1MB).
+*   Đích:
+    *   **AWS**: S3, Redshift (qua S3 COPY), OpenSearch.
+    *   **Bên thứ 3**: Splunk, Datadog, New Relic, MongoDB.
+    *   **HTTP endpoint tùy chỉnh**.
+*   Có thể **biến đổi dữ liệu** bằng Lambda trước khi gửi.
+*   Hỗ trợ **chuyển đổi format** (ví dụ: JSON → Parquet).
+*   **Không lưu dữ liệu** — không replay được.
+
+#### C. Kinesis Data Analytics
+*   Phân tích dữ liệu streaming real-time bằng **SQL** hoặc **Apache Flink**.
+*   Nguồn: Kinesis Data Streams, Kinesis Data Firehose.
+*   Fully managed, tự động scale.
+*   Use Cases: Phân tích chuỗi thời gian, dashboard real-time, metrics real-time.
+
+### SQS vs SNS vs Kinesis
+
+| Đặc điểm | SQS | SNS | Kinesis Data Streams |
+|---|---|---|---|
+| **Mô hình** | Queue (pull) | Pub/Sub (push) | Stream (pull) |
+| **Consumers** | Pull messages | Push đến subscribers | Pull từ shards |
+| **Lưu trữ** | Cho đến khi consumed/hết hạn | Không lưu | 1-365 ngày |
+| **Replay** | Không | Không | **Có** |
+| **Thứ tự** | Chỉ FIFO | Chỉ FIFO | Theo shard (Partition Key) |
+| **Throughput** | Không giới hạn (Standard) | Theo subscribers | Theo shard (1MB/s vào) |
+| **Use Case** | Decouple apps, xử lý bất đồng bộ | Fan out notifications | Streaming real-time, analytics |
+
+### Exam Tips
+*   **Kinesis Data Streams** = streaming real-time với **retention và replay**.
+*   **Kinesis Data Firehose** = **gần real-time** đến S3/Redshift/OpenSearch (không replay).
+*   **Kinesis Data Analytics** = SQL/Flink trên dữ liệu streaming.
+*   Data Streams: thứ tự theo shard qua **Partition Key**.
+*   Thấy "real-time" + "replay" + "streaming" → **Kinesis Data Streams**.
+*   Thấy "load streaming data to S3" → **Kinesis Data Firehose**.
