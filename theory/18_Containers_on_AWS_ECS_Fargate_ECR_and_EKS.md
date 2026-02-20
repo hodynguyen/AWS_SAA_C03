@@ -86,6 +86,73 @@ Amazon ECS is AWS's **container orchestration service** to run and manage Docker
 *   **EFS** works with both EC2 and Fargate; S3 cannot be mounted.
 *   Scale tasks with **Application Auto Scaling**; scale EC2 with **Capacity Provider/ASG**.
 
+## 3. Amazon ECR (Elastic Container Registry)
+
+Amazon ECR is a **managed Docker container image registry** on AWS.
+
+### Key Features
+*   Store, manage, and deploy Docker images.
+*   **Private** and **Public** repositories (Public = Amazon ECR Public Gallery).
+*   Fully integrated with **ECS** and **EKS**.
+*   Access controlled by **IAM** (permissions to push/pull images).
+*   Supports **image vulnerability scanning**, **versioning**, **image tags**, **lifecycle policies**.
+*   Images are stored in **S3** behind the scenes.
+
+### Exam Tips
+*   ECR = **Docker image registry** on AWS.
+*   If you see "store Docker images on AWS" → **Amazon ECR**.
+
+## 4. Amazon EKS (Elastic Kubernetes Service)
+
+Amazon EKS is a **managed Kubernetes** service on AWS. Kubernetes is an **open-source** container orchestration system.
+
+### Key Points
+*   An alternative to ECS with a **different API** — uses **Kubernetes** (open-source, portable).
+*   Supports **EC2 Launch Type** (you manage worker nodes) and **Fargate** (serverless).
+*   Use Case: If your company **already uses Kubernetes** on-premises or in another cloud and wants to migrate to AWS.
+*   **Cloud-agnostic** — can run on AWS, Azure, GCP, on-premises.
+
+### EKS Node Types
+*   **Managed Node Groups**: AWS creates and manages EC2 nodes for you (in an ASG). Supports On-Demand and Spot instances.
+*   **Self-Managed Nodes**: You create and register nodes yourself. Supports On-Demand and Spot.
+*   **Fargate**: No nodes to manage (serverless).
+
+### Exam Tips
+*   EKS = **managed Kubernetes** on AWS.
+*   Use EKS if already using Kubernetes or need **cloud-agnostic** container orchestration.
+*   Supports same launch types as ECS: **EC2** and **Fargate**.
+
+## 5. AWS App Runner
+
+AWS App Runner is a **fully managed service** to quickly deploy **web applications and APIs** at scale — no infrastructure experience required.
+
+### Key Features
+*   Start with **source code** (GitHub) or a **container image** (ECR).
+*   Automatically builds, deploys, scales, load balances, encrypts.
+*   **VPC access** support for connecting to databases, caches, etc.
+*   No Docker/infrastructure knowledge needed.
+
+### Use Cases
+*   Web apps, APIs, microservices, rapid production deployments.
+*   Perfect for developers who want to **deploy quickly** without managing infrastructure.
+
+### Exam Tips
+*   App Runner = **simplest way** to deploy containers/web apps on AWS.
+*   If you see "quickly deploy web app from source code or container" with **no infrastructure management** → **App Runner**.
+
+## 6. AWS App2Container
+
+AWS App2Container is a **CLI tool** that helps **migrate existing applications** to containers.
+
+### Key Features
+*   Automatically **containerizes** existing **Java** and **.NET** web applications.
+*   No code changes needed.
+*   Generates **Docker images**, **ECS Task Definitions**, **EKS pod specs**, and **CI/CD pipelines**.
+
+### Exam Tips
+*   App2Container = **migrate existing Java/.NET apps** to containers without code changes.
+*   CLI tool, generates Docker images + deployment artifacts.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -175,3 +242,70 @@ Amazon ECS là dịch vụ **điều phối container** của AWS để chạy v
 *   **Task Role** = quyền IAM từng task; **Instance Profile** = quyền ECS Agent.
 *   **EFS** hoạt động với cả EC2 và Fargate; S3 không thể mount.
 *   Scale tasks bằng **Application Auto Scaling**; scale EC2 bằng **Capacity Provider/ASG**.
+
+## 3. Amazon ECR (Elastic Container Registry)
+
+Amazon ECR là **registry Docker container image được quản lý** trên AWS.
+
+### Tính năng chính
+*   Lưu trữ, quản lý, và deploy Docker images.
+*   Repository **Private** và **Public** (Public = Amazon ECR Public Gallery).
+*   Tích hợp hoàn toàn với **ECS** và **EKS**.
+*   Quyền truy cập qua **IAM** (push/pull images).
+*   Hỗ trợ **quét lỗ hổng image**, **versioning**, **tags**, **lifecycle policies**.
+*   Images được lưu trong **S3** phía sau.
+
+### Exam Tips
+*   ECR = **Docker image registry** trên AWS.
+*   Thấy "lưu Docker images trên AWS" → **Amazon ECR**.
+
+## 4. Amazon EKS (Elastic Kubernetes Service)
+
+Amazon EKS là dịch vụ **managed Kubernetes** trên AWS. Kubernetes là hệ thống điều phối container **mã nguồn mở**.
+
+### Điểm chính
+*   Thay thế ECS với **API khác** — dùng **Kubernetes** (mã nguồn mở, portable).
+*   Hỗ trợ **EC2 Launch Type** (bạn quản lý worker nodes) và **Fargate** (serverless).
+*   Use Case: Công ty **đã dùng Kubernetes** on-premises hoặc cloud khác và muốn chuyển lên AWS.
+*   **Cloud-agnostic** — chạy trên AWS, Azure, GCP, on-premises.
+
+### EKS Node Types
+*   **Managed Node Groups**: AWS tạo và quản lý EC2 nodes (trong ASG). Hỗ trợ On-Demand và Spot.
+*   **Self-Managed Nodes**: Bạn tự tạo và đăng ký nodes. Hỗ trợ On-Demand và Spot.
+*   **Fargate**: Không quản lý nodes (serverless).
+
+### Exam Tips
+*   EKS = **managed Kubernetes** trên AWS.
+*   Dùng EKS khi đã dùng Kubernetes hoặc cần điều phối **cloud-agnostic**.
+*   Hỗ trợ cùng launch types với ECS: **EC2** và **Fargate**.
+
+## 5. AWS App Runner
+
+AWS App Runner là dịch vụ **được quản lý hoàn toàn** để deploy nhanh **web apps và APIs** ở quy mô lớn — không cần kinh nghiệm hạ tầng.
+
+### Tính năng chính
+*   Bắt đầu với **source code** (GitHub) hoặc **container image** (ECR).
+*   Tự động build, deploy, scale, load balance, mã hóa.
+*   Hỗ trợ **VPC access** để kết nối databases, caches, v.v.
+*   Không cần kiến thức Docker/hạ tầng.
+
+### Use Cases
+*   Web apps, APIs, microservices, deploy nhanh ra production.
+*   Phù hợp cho developers muốn **deploy nhanh** không quản lý hạ tầng.
+
+### Exam Tips
+*   App Runner = cách **đơn giản nhất** deploy containers/web apps trên AWS.
+*   Thấy "deploy nhanh web app từ source code hoặc container" với **không quản lý hạ tầng** → **App Runner**.
+
+## 6. AWS App2Container
+
+AWS App2Container là **công cụ CLI** giúp **migrate ứng dụng hiện tại** sang containers.
+
+### Tính năng chính
+*   Tự động **containerize** ứng dụng web **Java** và **.NET** hiện tại.
+*   Không cần thay đổi code.
+*   Tạo **Docker images**, **ECS Task Definitions**, **EKS pod specs**, và **CI/CD pipelines**.
+
+### Exam Tips
+*   App2Container = **migrate ứng dụng Java/.NET** sang containers không cần sửa code.
+*   Công cụ CLI, tạo Docker images + deployment artifacts.
