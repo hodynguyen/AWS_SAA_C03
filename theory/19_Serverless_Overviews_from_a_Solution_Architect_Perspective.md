@@ -143,6 +143,73 @@ Customize CDN content at the **edge locations** using functions.
 *   Lambda + internet from VPC = needs **NAT Gateway**.
 *   Lambda + DynamoDB from VPC = use **VPC Endpoint**.
 
+## 5. Amazon DynamoDB
+
+Amazon DynamoDB is a **fully managed, serverless NoSQL database** with single-digit millisecond performance at any scale.
+
+### Key Features
+*   **Serverless**: No servers to manage, auto-scaling.
+*   **Multi-AZ** replication with high availability.
+*   **Scales to massive workloads** — millions of requests/second, trillions of rows, TBs of storage.
+*   **Single-digit millisecond** latency on reads and writes.
+*   Integrated with **IAM** for security, authorization, and administration.
+
+### Data Model
+*   Made of **Tables**, each with a **Primary Key** (decided at creation).
+*   Each table has **Items** (rows), and each item has **Attributes** (columns).
+*   **Max item size**: **400KB**.
+*   Primary Key types:
+    *   **Partition Key** only (HASH).
+    *   **Partition Key + Sort Key** (HASH + RANGE).
+
+### Capacity Modes
+
+| Mode | Description | Best For |
+|---|---|---|
+| **Provisioned** | Specify RCU/WCU, can add Auto Scaling | Predictable workloads |
+| **On-Demand** | Auto-scales, pay per request | Unpredictable, spiky workloads |
+
+*   **RCU** = Read Capacity Units, **WCU** = Write Capacity Units.
+
+### Advanced Features
+
+#### DynamoDB Accelerator (DAX)
+*   **In-memory cache** for DynamoDB — **microsecond** latency.
+*   Fully managed, multi-AZ, up to **10x** read performance improvement.
+*   No application code changes needed (compatible with DynamoDB APIs).
+*   **DAX vs ElastiCache**: DAX is for DynamoDB caching specifically; ElastiCache is general-purpose.
+
+#### DynamoDB Streams
+*   **Ordered stream of item-level changes** (create, update, delete) in a table.
+*   Stream records can trigger **Lambda functions** for reactions.
+*   Use Cases: Real-time reactions, analytics, cross-region replication, derivative tables.
+*   Data retained for **24 hours**.
+
+#### DynamoDB Global Tables
+*   **Multi-region, multi-active** (read/write in any region) table replication.
+*   Must enable **DynamoDB Streams** as prerequisite.
+*   **Active-Active**: Apps can read and write in any region.
+*   Use Case: Low-latency access for globally distributed users.
+
+#### DynamoDB TTL (Time to Live)
+*   Automatically **delete items after an expiration timestamp**.
+*   No extra cost, no WCU consumed for deletion.
+*   Use Cases: Session data, temporary data, regulatory compliance.
+
+#### DynamoDB - Backups
+*   **Continuous backups** using Point-in-Time Recovery (PITR) — last 35 days.
+*   **On-demand backups** — long-term retention, until explicitly deleted.
+*   Can export to **S3** without affecting read capacity (uses PITR).
+*   Can import from **S3** without consuming write capacity.
+
+### Exam Tips
+*   DynamoDB = **serverless NoSQL**, single-digit ms latency, 400KB max item.
+*   **DAX** = in-memory cache for DynamoDB (microsecond latency).
+*   **Streams** = ordered change log → trigger Lambda.
+*   **Global Tables** = multi-region, active-active (needs Streams).
+*   **TTL** = auto-delete expired items.
+*   **On-Demand** = unpredictable; **Provisioned** = predictable workload.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -289,3 +356,70 @@ Tùy chỉnh nội dung CDN tại các **edge locations** bằng functions.
 *   Lambda + RDS = dùng **RDS Proxy** cho connection pooling.
 *   Lambda + internet từ VPC = cần **NAT Gateway**.
 *   Lambda + DynamoDB từ VPC = dùng **VPC Endpoint**.
+
+## 5. Amazon DynamoDB
+
+Amazon DynamoDB là **cơ sở dữ liệu NoSQL serverless, được quản lý hoàn toàn** với hiệu suất mili giây đơn ở mọi quy mô.
+
+### Tính năng chính
+*   **Serverless**: Không quản lý servers, tự động scale.
+*   Replicate **Multi-AZ** với tính sẵn sàng cao.
+*   **Scale đến workloads khổng lồ** — hàng triệu requests/giây, hàng tỷ rows, TBs storage.
+*   Độ trễ **mili giây đơn** khi đọc và ghi.
+*   Tích hợp **IAM** cho bảo mật và quản trị.
+
+### Mô hình dữ liệu
+*   Gồm **Tables**, mỗi bảng có **Primary Key** (quyết định khi tạo).
+*   Mỗi bảng có **Items** (hàng), mỗi item có **Attributes** (cột).
+*   **Kích thước item tối đa**: **400KB**.
+*   Loại Primary Key:
+    *   **Partition Key** (HASH).
+    *   **Partition Key + Sort Key** (HASH + RANGE).
+
+### Capacity Modes
+
+| Mode | Mô tả | Phù hợp cho |
+|---|---|---|
+| **Provisioned** | Chỉ định RCU/WCU, có thể Auto Scaling | Workloads có thể dự đoán |
+| **On-Demand** | Tự động scale, trả per request | Workloads không dự đoán, spiky |
+
+*   **RCU** = Read Capacity Units, **WCU** = Write Capacity Units.
+
+### Tính năng nâng cao
+
+#### DynamoDB Accelerator (DAX)
+*   **Cache trong bộ nhớ** cho DynamoDB — độ trễ **micro giây**.
+*   Fully managed, multi-AZ, cải thiện hiệu suất đọc lên tới **10 lần**.
+*   Không cần thay đổi code (tương thích DynamoDB APIs).
+*   **DAX vs ElastiCache**: DAX chuyên cho DynamoDB; ElastiCache là đa dụng.
+
+#### DynamoDB Streams
+*   **Luồng thay đổi có thứ tự** (tạo, sửa, xóa) trong bảng.
+*   Có thể trigger **Lambda functions** để phản ứng.
+*   Use Cases: Phản ứng real-time, analytics, replicate cross-region.
+*   Dữ liệu lưu **24 giờ**.
+
+#### DynamoDB Global Tables
+*   Replicate bảng **đa region, đa active** (đọc/ghi bất kỳ region nào).
+*   Cần bật **DynamoDB Streams** trước.
+*   **Active-Active**: Ứng dụng có thể đọc và ghi ở mọi region.
+*   Use Case: Truy cập độ trễ thấp cho người dùng toàn cầu.
+
+#### DynamoDB TTL (Time to Live)
+*   Tự động **xóa items sau mốc thời gian hết hạn**.
+*   Không tốn thêm phí, không tính WCU.
+*   Use Cases: Session data, dữ liệu tạm, tuân thủ quy định.
+
+#### DynamoDB - Backups
+*   **Continuous backups** với Point-in-Time Recovery (PITR) — 35 ngày gần nhất.
+*   **On-demand backups** — lưu dài hạn, cho đến khi xóa thủ công.
+*   Export sang **S3** không ảnh hưởng read capacity (dùng PITR).
+*   Import từ **S3** không tốn write capacity.
+
+### Exam Tips
+*   DynamoDB = **serverless NoSQL**, độ trễ ms đơn, item tối đa 400KB.
+*   **DAX** = cache trong bộ nhớ cho DynamoDB (độ trễ micro giây).
+*   **Streams** = log thay đổi có thứ tự → trigger Lambda.
+*   **Global Tables** = đa region, active-active (cần Streams).
+*   **TTL** = tự động xóa items hết hạn.
+*   **On-Demand** = không dự đoán; **Provisioned** = workload ổn định.
