@@ -230,6 +230,32 @@ Amazon Kinesis makes it easy to **collect, process, and analyze real-time stream
 *   If you see "real-time" + "replay" + "streaming" → **Kinesis Data Streams**.
 *   If you see "load streaming data to S3" → **Kinesis Data Firehose**.
 
+## 6. Amazon MQ
+
+Amazon MQ is a **managed message broker** service for **Apache ActiveMQ** and **RabbitMQ** on AWS.
+
+### Why Amazon MQ?
+*   SQS and SNS are **cloud-native** AWS services (proprietary protocols).
+*   If you're migrating from on-premises and your application uses **open standard protocols** (MQTT, AMQP, STOMP, OpenWire, WSS), you can't easily switch to SQS/SNS.
+*   Amazon MQ = **managed broker** that supports these open protocols → **no code changes** needed.
+
+### Key Features
+*   Supports **ActiveMQ** and **RabbitMQ** engines.
+*   Doesn't scale as well as SQS/SNS (runs on servers, not serverless).
+*   Can run in **Multi-AZ** with **failover** for high availability.
+*   Has both **queue features** (like SQS) and **topic features** (like SNS).
+
+### Amazon MQ - High Availability
+*   **Active/Standby** deployment in Multi-AZ.
+*   Uses **Amazon EFS** (Network File System) for storage — shared between active and standby.
+*   If active broker fails, standby takes over (automatic failover).
+
+### Exam Tips
+*   Amazon MQ = **managed ActiveMQ/RabbitMQ** for migrating existing apps using open protocols.
+*   Use **SQS/SNS** for new cloud-native apps.
+*   Use **Amazon MQ** when migrating and you **can't refactor** to use SQS/SNS.
+*   If you see "MQTT", "AMQP", "on-premises migration", "open standard protocol" → **Amazon MQ**.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -462,3 +488,29 @@ Amazon Kinesis giúp **thu thập, xử lý, và phân tích dữ liệu streami
 *   Data Streams: thứ tự theo shard qua **Partition Key**.
 *   Thấy "real-time" + "replay" + "streaming" → **Kinesis Data Streams**.
 *   Thấy "load streaming data to S3" → **Kinesis Data Firehose**.
+
+## 6. Amazon MQ
+
+Amazon MQ là dịch vụ **message broker được quản lý** cho **Apache ActiveMQ** và **RabbitMQ** trên AWS.
+
+### Tại sao cần Amazon MQ?
+*   SQS và SNS là dịch vụ **cloud-native** của AWS (giao thức độc quyền).
+*   Nếu migration từ on-premises và ứng dụng dùng **giao thức chuẩn mở** (MQTT, AMQP, STOMP, OpenWire, WSS), không thể dễ dàng chuyển sang SQS/SNS.
+*   Amazon MQ = **broker được quản lý** hỗ trợ các giao thức mở → **không cần sửa code**.
+
+### Tính năng chính
+*   Hỗ trợ engine **ActiveMQ** và **RabbitMQ**.
+*   Không scale tốt bằng SQS/SNS (chạy trên servers, không serverless).
+*   Có thể chạy **Multi-AZ** với **failover** cho tính sẵn sàng cao.
+*   Có cả tính năng **queue** (như SQS) và **topic** (như SNS).
+
+### Amazon MQ - High Availability
+*   Triển khai **Active/Standby** trong Multi-AZ.
+*   Dùng **Amazon EFS** (Network File System) để lưu trữ — chia sẻ giữa active và standby.
+*   Nếu active broker lỗi, standby tiếp quản (failover tự động).
+
+### Exam Tips
+*   Amazon MQ = **ActiveMQ/RabbitMQ được quản lý** cho migration ứng dụng dùng giao thức mở.
+*   Dùng **SQS/SNS** cho ứng dụng mới cloud-native.
+*   Dùng **Amazon MQ** khi migration và **không thể refactor** sang SQS/SNS.
+*   Thấy "MQTT", "AMQP", "on-premises migration", "giao thức chuẩn mở" → **Amazon MQ**.
