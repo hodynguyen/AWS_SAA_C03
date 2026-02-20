@@ -92,6 +92,57 @@ AWS Lambda is a **serverless compute service** — run code without provisioning
 *   **SnapStart** = faster cold starts for **Java only**.
 *   Pay per **request + compute duration**.
 
+## 3. Lambda@Edge & CloudFront Functions
+
+Customize CDN content at the **edge locations** using functions.
+
+### CloudFront Functions
+*   **Lightweight** JavaScript functions for **high-scale**, latency-sensitive CDN customizations.
+*   **Sub-millisecond** startup, **millions of requests/second**.
+*   Used for **Viewer Request/Response** only.
+*   Use Cases: Cache key normalization, header manipulation, URL rewrites/redirects, request authentication/authorization.
+
+### Lambda@Edge
+*   Full **Lambda functions** in Node.js or Python deployed to edge locations.
+*   **Scales to 1000s requests/second**.
+*   Used for **Viewer Request/Response** AND **Origin Request/Response**.
+*   Use Cases: Longer execution, network access, file system access, request body access.
+
+### CloudFront Functions vs Lambda@Edge
+
+| Feature | CloudFront Functions | Lambda@Edge |
+|---|---|---|
+| **Language** | JavaScript | Node.js, Python |
+| **Scale** | Millions req/s | 1000s req/s |
+| **Triggers** | Viewer only | Viewer + Origin |
+| **Execution time** | < 1ms | 5–10 seconds |
+| **Network/File access** | No | Yes |
+| **Pricing** | 1/6 of Lambda@Edge | Higher |
+
+### Exam Tips
+*   **CloudFront Functions**: Simple, fast, cheap — viewer-level only.
+*   **Lambda@Edge**: Complex logic, origin access, longer execution.
+
+## 4. Lambda in VPC & RDS Integration
+
+### Lambda in VPC
+*   By default, Lambda runs **outside your VPC** — can't access private resources (RDS, ElastiCache, etc.).
+*   To access VPC resources: define **VPC ID, Subnets, Security Groups**.
+*   Lambda creates an **ENI** (Elastic Network Interface) in your subnets.
+*   Lambda in VPC can access the **internet** via **NAT Gateway** (in public subnet).
+*   Lambda in VPC can access **DynamoDB** via **VPC Endpoint** (Gateway type).
+
+### RDS - Invoking Lambda & Event Notifications
+*   **RDS Proxy**: Recommended to use **RDS Proxy** between Lambda and RDS to manage connection pooling (Lambda creates many connections).
+*   **RDS Event Notifications**: RDS can send notifications about DB events (creation, failover, etc.) to **SNS** or **EventBridge**.
+*   **RDS Invoking Lambda**: RDS (Aurora MySQL/PostgreSQL) can invoke Lambda **from within the database** using stored procedures or triggers.
+
+### Exam Tips
+*   Lambda in VPC needs **ENI** + **Security Groups** → can access private resources.
+*   Lambda + RDS = use **RDS Proxy** for connection pooling.
+*   Lambda + internet from VPC = needs **NAT Gateway**.
+*   Lambda + DynamoDB from VPC = use **VPC Endpoint**.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -187,3 +238,54 @@ AWS Lambda là dịch vụ **compute serverless** — chạy code mà không c�
 *   **Concurrency**: 1000 mặc định. Reserved = đảm bảo. Provisioned = không cold starts.
 *   **SnapStart** = khởi động nhanh cho **Java only**.
 *   Trả tiền theo **request + thời gian compute**.
+
+## 3. Lambda@Edge & CloudFront Functions
+
+Tùy chỉnh nội dung CDN tại các **edge locations** bằng functions.
+
+### CloudFront Functions
+*   Hàm JavaScript **nhẹ** cho tùy chỉnh CDN **quy mô lớn**, độ trễ thấp.
+*   Khởi động **dưới mili giây**, **hàng triệu requests/giây**.
+*   Chỉ dùng cho **Viewer Request/Response**.
+*   Use Cases: Chuẩn hóa cache key, thao tác header, rewrite/redirect URL, xác thực request.
+
+### Lambda@Edge
+*   Hàm **Lambda đầy đủ** (Node.js hoặc Python) deploy đến edge locations.
+*   Scale lên **hàng nghìn requests/giây**.
+*   Dùng cho **Viewer Request/Response** VÀ **Origin Request/Response**.
+*   Use Cases: Logic phức tạp, truy cập mạng, file system, request body.
+
+### CloudFront Functions vs Lambda@Edge
+
+| Đặc điểm | CloudFront Functions | Lambda@Edge |
+|---|---|---|
+| **Ngôn ngữ** | JavaScript | Node.js, Python |
+| **Scale** | Hàng triệu req/s | Hàng nghìn req/s |
+| **Triggers** | Chỉ Viewer | Viewer + Origin |
+| **Thời gian** | < 1ms | 5–10 giây |
+| **Mạng/File** | Không | Có |
+| **Giá** | 1/6 Lambda@Edge | Cao hơn |
+
+### Exam Tips
+*   **CloudFront Functions**: Đơn giản, nhanh, rẻ — chỉ viewer-level.
+*   **Lambda@Edge**: Logic phức tạp, truy cập origin, chạy lâu hơn.
+
+## 4. Lambda trong VPC & Tích hợp RDS
+
+### Lambda trong VPC
+*   Mặc định, Lambda chạy **ngoài VPC** — không truy cập được tài nguyên private (RDS, ElastiCache, v.v.).
+*   Để truy cập VPC: định nghĩa **VPC ID, Subnets, Security Groups**.
+*   Lambda tạo **ENI** (Elastic Network Interface) trong subnets của bạn.
+*   Lambda trong VPC muốn truy cập **internet** qua **NAT Gateway** (trong public subnet).
+*   Lambda trong VPC truy cập **DynamoDB** qua **VPC Endpoint** (Gateway type).
+
+### RDS - Gọi Lambda & Event Notifications
+*   **RDS Proxy**: Nên dùng **RDS Proxy** giữa Lambda và RDS để quản lý connection pooling.
+*   **RDS Event Notifications**: RDS gửi thông báo về DB events (tạo, failover, v.v.) đến **SNS** hoặc **EventBridge**.
+*   **RDS Gọi Lambda**: RDS (Aurora MySQL/PostgreSQL) có thể gọi Lambda **từ bên trong database** qua stored procedures hoặc triggers.
+
+### Exam Tips
+*   Lambda trong VPC cần **ENI** + **Security Groups** → truy cập tài nguyên private.
+*   Lambda + RDS = dùng **RDS Proxy** cho connection pooling.
+*   Lambda + internet từ VPC = cần **NAT Gateway**.
+*   Lambda + DynamoDB từ VPC = dùng **VPC Endpoint**.
