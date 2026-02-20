@@ -87,6 +87,44 @@ Amazon SQS (Simple Queue Service) is a **fully managed message queue** service. 
 *   **Long Polling**: Always preferred, 1-20s wait, reduces API calls.
 *   SQS + ASG pattern: Scale consumers based on **queue depth** (ApproximateNumberOfMessages).
 
+## 3. SQS - FIFO Queues
+
+FIFO = **First In First Out** — messages are processed in the **exact order** they were sent.
+
+### Key Characteristics
+*   **Ordering**: **Guaranteed order** of messages (FIFO).
+*   **Delivery**: **Exactly-once** delivery (no duplicates).
+*   **Throughput**: Limited — **300 msg/s** without batching, **3000 msg/s** with batching.
+*   **Queue name**: Must end with `.fifo` suffix (e.g., `my-queue.fifo`).
+
+### Deduplication
+*   Prevents sending the **same message twice** within a **5-minute deduplication interval**.
+*   Two methods:
+    *   **Content-based**: SHA-256 hash of message body.
+    *   **Message Deduplication ID**: Explicitly provide a deduplication ID.
+
+### Message Grouping
+*   Messages with the same **MessageGroupID** are processed in order **within that group**.
+*   Each Group ID can have a **different consumer** — enables parallel processing while maintaining order per group.
+*   If you specify only **one GroupID**, all messages are consumed in strict order by one consumer.
+*   If you specify **different GroupIDs**, you get parallel consumption across groups (ordering only within each group).
+
+### Standard vs FIFO Comparison
+
+| Feature | Standard | FIFO |
+|---|---|---|
+| **Throughput** | Unlimited | 300/3000 msg/s |
+| **Ordering** | Best-effort | Guaranteed (FIFO) |
+| **Delivery** | At-least-once | Exactly-once |
+| **Deduplication** | No | Yes (5-min window) |
+| **Queue name** | Any | Must end with `.fifo` |
+
+### Exam Tips
+*   Need **ordering** → **SQS FIFO**.
+*   Need **exactly-once** → **SQS FIFO**.
+*   FIFO throughput is **limited** (300/3000 msg/s).
+*   **MessageGroupID** = ordering within a group + parallel processing across groups.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -176,3 +214,41 @@ Amazon SQS (Simple Queue Service) là dịch vụ **hàng đợi message đượ
 *   **Visibility Timeout**: Mặc định 30s, dùng ChangeMessageVisibility API để gia hạn.
 *   **Long Polling**: Luôn ưu tiên, 1-20s chờ, giảm API calls.
 *   SQS + ASG: Scale consumers dựa trên **queue depth** (ApproximateNumberOfMessages).
+
+## 3. SQS - FIFO Queues
+
+FIFO = **First In First Out** — messages được xử lý theo **đúng thứ tự** gửi.
+
+### Đặc điểm chính
+*   **Thứ tự**: **Đảm bảo thứ tự** messages (FIFO).
+*   **Phân phối**: **Exactly-once** (không trùng lặp).
+*   **Throughput**: Giới hạn — **300 msg/s** không batch, **3000 msg/s** có batch.
+*   **Tên queue**: Phải kết thúc bằng `.fifo` (ví dụ: `my-queue.fifo`).
+
+### Deduplication (Chống trùng lặp)
+*   Ngăn gửi **cùng message hai lần** trong khoảng **5 phút**.
+*   Hai cách:
+    *   **Content-based**: SHA-256 hash của message body.
+    *   **Message Deduplication ID**: Cung cấp deduplication ID rõ ràng.
+
+### Message Grouping (Phân nhóm)
+*   Messages có cùng **MessageGroupID** được xử lý theo thứ tự **trong nhóm đó**.
+*   Mỗi Group ID có thể có **consumer khác nhau** — cho phép xử lý song song với thứ tự trong nhóm.
+*   Nếu chỉ dùng **một GroupID**, tất cả messages được một consumer xử lý tuần tự.
+*   Nếu dùng **nhiều GroupIDs**, có thể xử lý song song giữa các nhóm.
+
+### Standard vs FIFO
+
+| Đặc điểm | Standard | FIFO |
+|---|---|---|
+| **Throughput** | Không giới hạn | 300/3000 msg/s |
+| **Thứ tự** | Best-effort | Đảm bảo (FIFO) |
+| **Phân phối** | At-least-once | Exactly-once |
+| **Chống trùng** | Không | Có (5 phút) |
+| **Tên queue** | Bất kỳ | Phải kết thúc `.fifo` |
+
+### Exam Tips
+*   Cần **thứ tự** → **SQS FIFO**.
+*   Cần **exactly-once** → **SQS FIFO**.
+*   FIFO throughput **giới hạn** (300/3000 msg/s).
+*   **MessageGroupID** = thứ tự trong nhóm + xử lý song song giữa các nhóm.
