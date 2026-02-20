@@ -125,6 +125,56 @@ FIFO = **First In First Out** — messages are processed in the **exact order** 
 *   FIFO throughput is **limited** (300/3000 msg/s).
 *   **MessageGroupID** = ordering within a group + parallel processing across groups.
 
+## 4. Amazon SNS (Simple Notification Service)
+
+Amazon SNS is a **fully managed Pub/Sub messaging service**. One message is sent to a **topic**, and all **subscribers** receive it.
+
+### How It Works
+*   **Publisher** sends a message to an **SNS Topic**.
+*   All **subscribers** to that topic receive the message.
+*   Up to **12,500,000 subscriptions** per topic.
+*   Up to **100,000 topics**.
+
+### Subscribers
+*   **SQS** queues (most common).
+*   **Lambda** functions.
+*   **Kinesis Data Firehose**.
+*   **HTTP/HTTPS** endpoints.
+*   **Emails**, **SMS**, **Mobile push notifications**.
+
+### How to Publish
+*   **Topic Publish** (SDK): Create a topic, create subscriptions, publish to topic.
+*   **Direct Publish** (mobile SDK): Publish directly to a platform endpoint (mobile push).
+
+### SNS + SQS Fan Out Pattern
+*   **Problem**: You need to send the same message to **multiple SQS queues**.
+*   **Solution**: Push once to SNS topic, and have **multiple SQS queues subscribe** to the topic.
+*   **Benefits**:
+    *   Fully decoupled, no data loss.
+    *   Add more SQS subscribers over time.
+    *   SQS allows data persistence, delayed processing, retries.
+*   **Requirement**: SQS queue **Access Policy** must allow SNS to write to it.
+*   **Use Cases**:
+    *   S3 Event → SNS → multiple SQS (only one S3 event rule per prefix).
+    *   SNS → SQS → different processing pipelines.
+
+### SNS - Message Filtering
+*   **JSON policy** attached to SNS subscriptions to **filter** which messages a subscriber receives.
+*   Without filtering, subscribers receive **all messages**.
+*   Example: Order topic → Filter "placed" to SQS-A, filter "cancelled" to SQS-B.
+
+### SNS - FIFO Topics
+*   Similar to SQS FIFO: **ordering** by Message Group ID, **deduplication**.
+*   **Subscribers can only be SQS FIFO queues**.
+*   Throughput same as SQS FIFO (limited).
+
+### Exam Tips
+*   SNS = **Pub/Sub**, one message to many receivers.
+*   **Fan Out**: SNS + SQS = send to multiple queues at once.
+*   **Message Filtering**: JSON filter policy on subscriptions.
+*   SNS FIFO → only SQS FIFO subscribers.
+*   S3 events can only have **one rule per event type/prefix** → use **Fan Out** to send to multiple destinations.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -252,3 +302,53 @@ FIFO = **First In First Out** — messages được xử lý theo **đúng thứ
 *   Cần **exactly-once** → **SQS FIFO**.
 *   FIFO throughput **giới hạn** (300/3000 msg/s).
 *   **MessageGroupID** = thứ tự trong nhóm + xử lý song song giữa các nhóm.
+
+## 4. Amazon SNS (Simple Notification Service)
+
+Amazon SNS là dịch vụ **Pub/Sub messaging được quản lý hoàn toàn**. Một message gửi đến **topic**, tất cả **subscribers** đều nhận được.
+
+### Cách hoạt động
+*   **Publisher** gửi message đến **SNS Topic**.
+*   Tất cả **subscribers** của topic đều nhận message.
+*   Lên đến **12,500,000 subscriptions** mỗi topic.
+*   Lên đến **100,000 topics**.
+
+### Subscribers
+*   **SQS** queues (phổ biến nhất).
+*   **Lambda** functions.
+*   **Kinesis Data Firehose**.
+*   **HTTP/HTTPS** endpoints.
+*   **Email**, **SMS**, **Mobile push notifications**.
+
+### Cách Publish
+*   **Topic Publish** (SDK): Tạo topic, tạo subscriptions, publish lên topic.
+*   **Direct Publish** (mobile SDK): Publish trực tiếp đến platform endpoint (mobile push).
+
+### SNS + SQS Fan Out Pattern
+*   **Vấn đề**: Cần gửi cùng message đến **nhiều SQS queues**.
+*   **Giải pháp**: Push một lần vào SNS topic, **nhiều SQS queues subscribe** topic đó.
+*   **Lợi ích**:
+    *   Hoàn toàn decoupled, không mất dữ liệu.
+    *   Thêm SQS subscribers bất cứ lúc nào.
+    *   SQS cho phép lưu trữ, xử lý trễ, retry.
+*   **Yêu cầu**: SQS queue **Access Policy** phải cho phép SNS ghi vào.
+*   **Use Cases**:
+    *   S3 Event → SNS → nhiều SQS (chỉ 1 S3 event rule mỗi prefix).
+    *   SNS → SQS → các pipeline xử lý khác nhau.
+
+### SNS - Message Filtering (Lọc messages)
+*   **JSON policy** gắn vào SNS subscriptions để **lọc** messages nào subscriber nhận.
+*   Không có filter, subscribers nhận **tất cả messages**.
+*   Ví dụ: Order topic → Filter "placed" vào SQS-A, filter "cancelled" vào SQS-B.
+
+### SNS - FIFO Topics
+*   Giống SQS FIFO: **thứ tự** theo Message Group ID, **deduplication**.
+*   **Subscribers chỉ có thể là SQS FIFO queues**.
+*   Throughput giống SQS FIFO (giới hạn).
+
+### Exam Tips
+*   SNS = **Pub/Sub**, một message đến nhiều receivers.
+*   **Fan Out**: SNS + SQS = gửi đến nhiều queues cùng lúc.
+*   **Message Filtering**: JSON filter policy trên subscriptions.
+*   SNS FIFO → chỉ SQS FIFO subscribers.
+*   S3 events chỉ có **một rule per event type/prefix** → dùng **Fan Out** để gửi nhiều đích.
