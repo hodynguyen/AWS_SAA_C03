@@ -210,6 +210,89 @@ Amazon DynamoDB is a **fully managed, serverless NoSQL database** with single-di
 *   **TTL** = auto-delete expired items.
 *   **On-Demand** = unpredictable; **Provisioned** = predictable workload.
 
+## 6. API Gateway
+
+Amazon API Gateway is a **fully managed service** to create, publish, maintain, and secure **REST, HTTP, and WebSocket APIs**.
+
+### Key Features
+*   **Serverless** — no infrastructure to manage.
+*   Support for **REST APIs**, **HTTP APIs**, and **WebSocket APIs**.
+*   Handles **authentication, throttling, API keys, CORS**.
+*   Integrates with **Lambda** (most common), **HTTP endpoints**, **AWS services**.
+*   Can **transform** requests and responses.
+
+### Endpoint Types
+*   **Edge-Optimized** (default): Requests routed through CloudFront edge locations. API Gateway lives in one region.
+*   **Regional**: For clients in the same region. Can manually combine with CloudFront.
+*   **Private**: Accessible only from within your **VPC** using VPC Endpoint (ENI).
+
+### Security
+*   **IAM Roles**: For AWS users/roles (Sig v4).
+*   **Cognito User Pools**: For external users (web/mobile apps).
+*   **Lambda Authorizer** (Custom Authorizer): Custom authentication logic via Lambda.
+*   **HTTPS**: Custom domain names with ACM (AWS Certificate Manager) certificates.
+
+### Exam Tips
+*   API Gateway = **managed API proxy** for Lambda/HTTP/AWS services.
+*   **Edge-Optimized** = CloudFront; **Regional** = same region; **Private** = VPC only.
+*   Security: **IAM** (internal), **Cognito** (external users), **Lambda Authorizer** (custom logic).
+*   If you see "expose Lambda as REST API" → **API Gateway**.
+
+## 7. AWS Step Functions
+
+AWS Step Functions is a **serverless workflow orchestration** service to coordinate multiple AWS services into business workflows.
+
+### Key Features
+*   Build workflows as **state machines** using **JSON** (Amazon States Language).
+*   Visual workflow designer in the console.
+*   Orchestrate **Lambda, ECS, DynamoDB, SQS, SNS, Batch, Glue**, and more.
+*   Features: **sequence, parallel, conditions, error handling, retries, timeouts, human approval**.
+*   **Max execution time**: **1 year**.
+
+### Use Cases
+*   Order processing workflows.
+*   Data processing pipelines.
+*   Machine learning model training orchestration.
+*   Any multi-step business process.
+
+### Exam Tips
+*   Step Functions = **visual workflow orchestration** for multiple AWS services.
+*   If you see "orchestrate Lambda functions" or "workflow with error handling" → **Step Functions**.
+*   Max execution: **1 year** (vs Lambda 15 min).
+
+## 8. Amazon Cognito
+
+Amazon Cognito provides **authentication, authorization, and user management** for web and mobile applications.
+
+### Cognito User Pools (CUP)
+*   **Sign-in** functionality for app users.
+*   Provides a **serverless user database**.
+*   Features: Username/password, MFA, email/phone verification, social login (Google, Facebook, SAML).
+*   Returns **JWT tokens** after authentication.
+*   Integrates with **API Gateway** and **ALB** for authentication.
+
+### Cognito Identity Pools (Federated Identities)
+*   Provide **temporary AWS credentials** to access AWS resources directly.
+*   Users can be from Cognito User Pools, 3rd party logins (Google, Facebook), or anonymous.
+*   Credentials are mapped to **IAM roles** (with fine-grained policies).
+*   Use Case: Allow mobile app user to upload to S3 or access DynamoDB directly.
+
+### CUP vs Identity Pools
+
+| Feature | Cognito User Pools | Cognito Identity Pools |
+|---|---|---|
+| **Purpose** | Authentication (sign in/up) | Authorization (AWS credentials) |
+| **Returns** | JWT tokens | Temporary AWS credentials |
+| **Use Case** | User database, login | Access AWS services directly |
+| **Integration** | API Gateway, ALB | S3, DynamoDB, any AWS service |
+
+### Exam Tips
+*   **User Pools** = sign in/up, user database, JWT tokens → API Gateway/ALB.
+*   **Identity Pools** = temporary AWS credentials for direct AWS access.
+*   CUP + Identity Pools often used **together**: CUP authenticates → Identity Pool provides AWS credentials.
+*   If you see "login for web/mobile app" → **Cognito User Pools**.
+*   If you see "give users direct access to S3/DynamoDB" → **Cognito Identity Pools**.
+
 ---
 
 <a id="vietnamese-version"></a>
@@ -423,3 +506,86 @@ Amazon DynamoDB là **cơ sở dữ liệu NoSQL serverless, được quản lý
 *   **Global Tables** = đa region, active-active (cần Streams).
 *   **TTL** = tự động xóa items hết hạn.
 *   **On-Demand** = không dự đoán; **Provisioned** = workload ổn định.
+
+## 6. API Gateway
+
+Amazon API Gateway là dịch vụ **được quản lý hoàn toàn** để tạo, publish, duy trì và bảo mật **REST, HTTP, và WebSocket APIs**.
+
+### Tính năng chính
+*   **Serverless** — không quản lý hạ tầng.
+*   Hỗ trợ **REST APIs**, **HTTP APIs**, và **WebSocket APIs**.
+*   Xử lý **authentication, throttling, API keys, CORS**.
+*   Tích hợp với **Lambda** (phổ biến nhất), **HTTP endpoints**, **AWS services**.
+*   Có thể **biến đổi** requests và responses.
+
+### Endpoint Types
+*   **Edge-Optimized** (mặc định): Requests qua CloudFront edge locations.
+*   **Regional**: Cho clients cùng region. Có thể kết hợp CloudFront thủ công.
+*   **Private**: Chỉ truy cập từ **VPC** qua VPC Endpoint (ENI).
+
+### Bảo mật
+*   **IAM Roles**: Cho AWS users/roles (Sig v4).
+*   **Cognito User Pools**: Cho người dùng bên ngoài (web/mobile apps).
+*   **Lambda Authorizer**: Logic xác thực tùy chỉnh qua Lambda.
+*   **HTTPS**: Custom domain với ACM (AWS Certificate Manager) certificates.
+
+### Exam Tips
+*   API Gateway = **managed API proxy** cho Lambda/HTTP/AWS services.
+*   **Edge-Optimized** = CloudFront; **Regional** = cùng region; **Private** = chỉ VPC.
+*   Bảo mật: **IAM** (nội bộ), **Cognito** (người dùng ngoài), **Lambda Authorizer** (tùy chỉnh).
+*   Thấy "expose Lambda as REST API" → **API Gateway**.
+
+## 7. AWS Step Functions
+
+AWS Step Functions là dịch vụ **điều phối workflow serverless** để phối hợp nhiều AWS services thành business workflows.
+
+### Tính năng chính
+*   Xây dựng workflows là **state machines** bằng **JSON** (Amazon States Language).
+*   Công cụ thiết kế workflow trực quan trong console.
+*   Điều phối **Lambda, ECS, DynamoDB, SQS, SNS, Batch, Glue**, và nhiều hơn.
+*   Tính năng: **sequence, parallel, conditions, xử lý lỗi, retry, timeout, phê duyệt thủ công**.
+*   **Thời gian thực thi tối đa**: **1 năm**.
+
+### Use Cases
+*   Quy trình xử lý đơn hàng.
+*   Pipeline xử lý dữ liệu.
+*   Điều phối training mô hình ML.
+*   Mọi quy trình business nhiều bước.
+
+### Exam Tips
+*   Step Functions = **điều phối workflow trực quan** cho nhiều AWS services.
+*   Thấy "orchestrate Lambda" hoặc "workflow với xử lý lỗi" → **Step Functions**.
+*   Thời gian thực thi tối đa: **1 năm** (vs Lambda 15 phút).
+
+## 8. Amazon Cognito
+
+Amazon Cognito cung cấp **xác thực, ủy quyền, và quản lý người dùng** cho ứng dụng web và mobile.
+
+### Cognito User Pools (CUP)
+*   Chức năng **đăng nhập** cho người dùng ứng dụng.
+*   Cung cấp **user database serverless**.
+*   Tính năng: Username/password, MFA, xác minh email/phone, social login (Google, Facebook, SAML).
+*   Trả về **JWT tokens** sau xác thực.
+*   Tích hợp với **API Gateway** và **ALB** cho xác thực.
+
+### Cognito Identity Pools (Federated Identities)
+*   Cung cấp **temporary AWS credentials** để truy cập AWS resources trực tiếp.
+*   Người dùng từ Cognito User Pools, 3rd party logins, hoặc anonymous.
+*   Credentials được map vào **IAM roles**.
+*   Use Case: Cho phép người dùng mobile upload S3 hoặc truy cập DynamoDB trực tiếp.
+
+### CUP vs Identity Pools
+
+| Đặc điểm | Cognito User Pools | Cognito Identity Pools |
+|---|---|---|
+| **Mục đích** | Xác thực (đăng nhập/ký) | Ủy quyền (AWS credentials) |
+| **Trả về** | JWT tokens | Temporary AWS credentials |
+| **Use Case** | User database, login | Truy cập AWS services trực tiếp |
+| **Tích hợp** | API Gateway, ALB | S3, DynamoDB, mọi AWS service |
+
+### Exam Tips
+*   **User Pools** = đăng nhập/ký, user database, JWT tokens → API Gateway/ALB.
+*   **Identity Pools** = temporary AWS credentials cho truy cập AWS trực tiếp.
+*   CUP + Identity Pools thường dùng **cùng nhau**: CUP xác thực → Identity Pool cấp AWS credentials.
+*   Thấy "login cho web/mobile app" → **Cognito User Pools**.
+*   Thấy "cho người dùng truy cập trực tiếp S3/DynamoDB" → **Cognito Identity Pools**.
